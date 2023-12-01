@@ -182,11 +182,10 @@ export default {
             this.loading = true;
             this.isLoading = true;
             const token = localStorage.getItem("token");
-            alert(token)
 
             try {
                 const response = await axios.get(
-                    "https://paneldecontrolem.cl/api/alliance/",
+                    "http://binfrix.com/api/alliance/",
                     {
                         headers: {
                             Authorization: `Bearer ${token}`,

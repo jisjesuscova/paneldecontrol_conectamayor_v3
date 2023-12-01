@@ -55,7 +55,7 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'https://paneldecontrolem.cl'),
+    'url' => env('APP_URL', 'localhost'),
 
     'asset_url' => env('ASSET_URL'),
 

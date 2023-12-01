@@ -86,7 +86,7 @@ export default {
             const formData = new FormData()
             formData.append('id', 1)
 
-            axios.post('https://paneldecontrolem.cl/api/user/logout', formData, {
+            axios.post('http://binfrix.com/api/user/logout', formData, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                     'Content-Type': 'multipart/form-data',

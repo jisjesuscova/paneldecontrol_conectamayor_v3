@@ -690,7 +690,7 @@ export default {
 
             try {
                 const response = await axios.get(
-                    "https://paneldecontrolem.cl/api/category/search/" + this.section_input,
+                    "http://binfrix.com/api/category/search/" + this.section_input,
                     {
                         headers: {
                             Authorization: `Bearer ${token}`,
@@ -713,7 +713,7 @@ export default {
 
             try {
                 const response = await axios.get(
-                    "https://paneldecontrolem.cl/api/region/",
+                    "http://binfrix.com/api/region/",
                     {
                         headers: {
                             Authorization: `Bearer ${token}`,
@@ -740,7 +740,7 @@ export default {
             for (const region_id of region_ids) {
                 try {
                     const response = await axios.get(
-                        "https://paneldecontrolem.cl/api/commune/" + region_id,
+                        "http://binfrix.com/api/commune/" + region_id,
                             {
                                 headers: {
                                     Authorization: `Bearer ${token}`,
@@ -800,7 +800,7 @@ export default {
 
             try {
                 const response = await axios.post(
-                    "https://paneldecontrolem.cl/api/category/store",
+                    "http://binfrix.com/api/category/store",
                     formData,
                     {
                         headers: {
@@ -827,7 +827,7 @@ export default {
 
             try {
                 const response = await axios.get(
-                    "https://paneldecontrolem.cl/api/section/all",
+                    "http://binfrix.com/api/section/all",
                     {
                         headers: {
                             Authorization: `Bearer ${token}`,

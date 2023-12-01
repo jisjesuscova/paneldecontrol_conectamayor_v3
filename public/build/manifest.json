@@ -24,7 +24,7 @@
     "src": "resources/css/app.css"
   },
   "resources/js/app.js": {
-    "file": "assets/app-e521b0cf.js",
+    "file": "assets/app-d4e4686b.js",
     "imports": [
       "_axios-21b846bc.js"
     ],
@@ -32,7 +32,7 @@
     "src": "resources/js/app.js"
   },
   "resources/js/main.css": {
-    "file": "assets/main-3feaa353.css",
+    "file": "assets/main-9e7cc088.css",
     "src": "resources/js/main.css"
   },
   "resources/js/main.js": {
@@ -43,9 +43,9 @@
       "assets/materialdesignicons-webfont-be825c12.ttf"
     ],
     "css": [
-      "assets/main-3feaa353.css"
+      "assets/main-9e7cc088.css"
     ],
-    "file": "assets/main-2c978722.js",
+    "file": "assets/main-4b7f85ab.js",
     "imports": [
       "_axios-21b846bc.js"
     ],
