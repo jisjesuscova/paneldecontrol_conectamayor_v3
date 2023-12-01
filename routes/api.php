@@ -19,7 +19,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::group(['middleware' => 'auth:sanctum'], function () {
-    Route::get('alliance', [\App\Http\Controllers\Api\AllianceController::class, 'index']);
+    
     Route::delete('alliance/{id}', [\App\Http\Controllers\Api\AllianceController::class, 'destroy']);
     Route::get('alliance/{id}', [\App\Http\Controllers\Api\AllianceController::class, 'edit']);
     Route::post('alliance/store', [\App\Http\Controllers\Api\AllianceController::class, 'store']);
@@ -76,7 +76,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 
     Route::post('audit/store', [\App\Http\Controllers\Api\AuditController::class, 'store']);
 });
-
+Route::get('alliance', [\App\Http\Controllers\Api\AllianceController::class, 'index']);
 Route::post('user/login', [\App\Http\Controllers\Api\UserController::class, 'login']);
 Route::post('user/logout', [\App\Http\Controllers\Api\UserController::class, 'logout']);
 Route::get('front_section', [\App\Http\Controllers\Api\FrontSectionController::class, 'index']);
