@@ -664,7 +664,7 @@ export default {
 
             try {
                 const response = await axios.get(
-                    "http://example.test/api/section",
+                    "https://portalconectamayor.cl/api/section",
                     {
                         headers: {
                             Authorization: `Bearer ${token}`,
@@ -687,7 +687,7 @@ export default {
 
             try {
                 const response = await axios.get(
-                    "http://example.test/api/region/",
+                    "https://portalconectamayor.cl/api/region/",
                     {
                         headers: {
                             Authorization: `Bearer ${token}`,
@@ -714,7 +714,7 @@ export default {
             for (const region_id of region_ids) {
                 try {
                     const response = await axios.get(
-                        "http://example.test/api/commune/" + region_id,
+                        "https://portalconectamayor.cl/api/commune/" + region_id,
                             {
                                 headers: {
                                     Authorization: `Bearer ${token}`,
@@ -773,7 +773,7 @@ export default {
 
             try {
                 const response = await axios.post(
-                    "http://example.test/api/section/store",
+                    "https://portalconectamayor.cl/api/section/store",
                     formData,
                     {
                         headers: {

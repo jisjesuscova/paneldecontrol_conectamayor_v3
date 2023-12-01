@@ -86,7 +86,7 @@ export default {
             const formData = new FormData()
             formData.append('id', 1)
 
-            axios.post('http://example.test/api/user/logout', formData, {
+            axios.post('https://portalconectamayor.cl/api/user/logout', formData, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                     'Content-Type': 'multipart/form-data',

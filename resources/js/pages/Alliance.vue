@@ -185,7 +185,7 @@ export default {
 
             try {
                 const response = await axios.get(
-                    "http://example.test/api/alliance/",
+                    "https://portalconectamayor.cl/api/alliance/",
                     {
                         headers: {
                             Authorization: `Bearer ${token}`,
