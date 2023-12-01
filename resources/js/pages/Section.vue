@@ -209,7 +209,7 @@ export default {
 
             try {
                 const response = await axios.get(
-                    "https://portalconectamayor.cl/api/section?page="+this.currentPage,
+                    "https://paneldecontrolem.cl/api/section?page="+this.currentPage,
                     {
                         headers: {
                             Authorization: `Bearer ${token}`,
@@ -231,7 +231,7 @@ export default {
                 
                 try {
                     const response = await axios.get(
-                        "https://portalconectamayor.cl/api/section/copy/" + id,
+                        "https://paneldecontrolem.cl/api/section/copy/" + id,
                         {
                             headers: {
                                 Authorization: `Bearer ${token}`,
@@ -249,7 +249,7 @@ export default {
             
             try {
                 const response = await axios.get(
-                    "https://portalconectamayor.cl/api/section/move_down/" + id,
+                    "https://paneldecontrolem.cl/api/section/move_down/" + id,
                     {
                         headers: {
                             Authorization: `Bearer ${token}`,
@@ -261,7 +261,7 @@ export default {
                 
                 try {
                     const response = await axios.get(
-                        "https://portalconectamayor.cl/api/section/",
+                        "https://paneldecontrolem.cl/api/section/",
                         {
                             headers: {
                                 Authorization: `Bearer ${token}`,
@@ -284,7 +284,7 @@ export default {
             
             try {
                 const response = await axios.get(
-                    "https://portalconectamayor.cl/api/section/move_up/" + id,
+                    "https://paneldecontrolem.cl/api/section/move_up/" + id,
                     {
                         headers: {
                             Authorization: `Bearer ${token}`,
@@ -296,7 +296,7 @@ export default {
                 
                 try {
                     const response = await axios.get(
-                        "https://portalconectamayor.cl/api/section/",
+                        "https://paneldecontrolem.cl/api/section/",
                         {
                             headers: {
                                 Authorization: `Bearer ${token}`,

@@ -244,7 +244,7 @@ export default {
 
             try {
                 const response = await axios.post(
-                    "https://portalconectamayor.cl/api/alliance/" + this.$route.params.id,
+                    "https://paneldecontrolem.cl/api/alliance/" + this.$route.params.id,
                     formData,
                     {
                         headers: {
@@ -269,7 +269,7 @@ export default {
 
             try {
                 const response = await axios.get(
-                    "https://portalconectamayor.cl/api/alliance/" + this.$route.params.id,
+                    "https://paneldecontrolem.cl/api/alliance/" + this.$route.params.id,
                     {
                         headers: {
                             accept: "application/json",
