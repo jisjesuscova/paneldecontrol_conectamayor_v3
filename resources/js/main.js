@@ -22,6 +22,5 @@ const home = createApp(HomeApp).use(Oruga).use(router);
 
 home.config.globalProperties.$axios = axios;
 window.axios = axios;
+axios.defaults.baseURL = process.env.MIX_APP_URL + "/api";
 axios.defaults.withCredentials = true;
-axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
-axios.defaults.headers.common['X-CSRF-TOKEN'] = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
