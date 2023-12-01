@@ -246,7 +246,7 @@ export default {
 
             try {
                 const response = await axios.post(
-                    "https://paneldecontrolem.cl/api/alliance/store",
+                    "https://binfrix.com/api/alliance/store",
                     formData,
                     {
                         headers: {
