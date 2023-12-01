@@ -22,27 +22,21 @@ class UserController extends Controller
             'password' => $request->password
         ];
 
-        Log::info($credentials);
+        $token = Auth::attempt($credentials);
 
-        if (Auth::attempt($credentials)) {
-            $token = Auth::user()->createToken('authToken')->plainTextToken;
-
-            Log::info($token);
-            Log::info(Auth::user());
-
+        if (!$token) {
             return response()->json([
-                'success' => true,
-                'data' => [
-                    'user' => Auth::user(),
-                    'token' => $token
-                ]
-            ], 200);
+                'message' => 'Unauthorized',
+            ], 401);
         }
 
         return response()->json([
-            'success' => false,
-            'message' => 'Invalid credentials'
-        ], 401);
+            'success' => true,
+            'data' => [
+                'user' => Auth::user(),
+                'token' => $token
+            ]
+        ], 200);
     }
 
     /**
