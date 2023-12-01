@@ -21,8 +21,13 @@ class UserController extends Controller
             'password' => $request->password
         ];
 
+        Log::info($credentials);
+
         if (Auth::attempt($credentials)) {
             $token = Auth::user()->createToken('authToken')->plainTextToken;
+
+            Log::info($token);
+            Log::info(Auth::user());
 
             return response()->json([
                 'success' => true,

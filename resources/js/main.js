@@ -22,5 +22,3 @@ const home = createApp(HomeApp).use(Oruga).use(router);
 
 home.config.globalProperties.$axios = axios;
 window.axios = axios;
-axios.defaults.baseURL = process.env.MIX_APP_URL + "/api";
-axios.defaults.withCredentials = true;
