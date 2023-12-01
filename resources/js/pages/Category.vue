@@ -260,7 +260,7 @@ export default {
                 
                 try {
                     const response = await axios.get(
-                        "http://binfrix.com/api/category/copy/" + id,
+                        "https://paneldecontrolem.cl/api/category/copy/" + id,
                         {
                             headers: {
                                 Authorization: `Bearer ${token}`,
@@ -280,7 +280,7 @@ export default {
             
             try {
                 const response = await axios.get(
-                    "http://binfrix.com/api/category/move_down/" + this.section_input + "/" + id,
+                    "https://paneldecontrolem.cl/api/category/move_down/" + this.section_input + "/" + id,
                     {
                         headers: {
                             Authorization: `Bearer ${token}`,
@@ -292,7 +292,7 @@ export default {
                 
                 try {
                     const response = await axios.get(
-                        "http://binfrix.com/api/category/search/" + this.section_input,
+                        "https://paneldecontrolem.cl/api/category/search/" + this.section_input,
                         {
                             headers: {
                                 Authorization: `Bearer ${token}`,
@@ -315,7 +315,7 @@ export default {
             
             try {
                 const response = await axios.get(
-                    "http://binfrix.com/api/category/move_up/" + this.section_input + "/" + id,
+                    "https://paneldecontrolem.cl/api/category/move_up/" + this.section_input + "/" + id,
                     {
                         headers: {
                             Authorization: `Bearer ${token}`,
@@ -327,7 +327,7 @@ export default {
                 
                 try {
                     const response = await axios.get(
-                        "http://binfrix.com/api/category/search/" + this.section_input,
+                        "https://paneldecontrolem.cl/api/category/search/" + this.section_input,
                         {
                             headers: {
                                 Authorization: `Bearer ${token}`,
@@ -355,7 +355,7 @@ export default {
 
             try {
                 const response = await axios.get(
-                    "http://binfrix.com/api/category/",
+                    "https://paneldecontrolem.cl/api/category/",
                     {
                         headers: {
                             Authorization: `Bearer ${token}`,
@@ -379,7 +379,7 @@ export default {
 
             try {
                 const response = await axios.get(
-                    "http://binfrix.com/api/section/all",
+                    "https://paneldecontrolem.cl/api/section/all",
                     {
                         headers: {
                             Authorization: `Bearer ${token}`,
@@ -403,7 +403,7 @@ export default {
 
             try {
                 const response = await axios.get(
-                    "http://binfrix.com/api/category/search/" + this.section_input,
+                    "https://paneldecontrolem.cl/api/category/search/" + this.section_input,
                     {
                         headers: {
                             Authorization: `Bearer ${token}`,

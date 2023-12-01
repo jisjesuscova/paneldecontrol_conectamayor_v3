@@ -185,7 +185,7 @@ export default {
 
             try {
                 const response = await axios.get(
-                    "http://binfrix.com/api/alliance/",
+                    "https://paneldecontrolem.cl/api/alliance/",
                     {
                         headers: {
                             Authorization: `Bearer ${token}`,
