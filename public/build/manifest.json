@@ -24,7 +24,7 @@
     "src": "resources/css/app.css"
   },
   "resources/js/app.js": {
-    "file": "assets/app-d4e4686b.js",
+    "file": "assets/app-e521b0cf.js",
     "imports": [
       "_axios-21b846bc.js"
     ],
