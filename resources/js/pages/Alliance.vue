@@ -182,6 +182,7 @@ export default {
             this.loading = true;
             this.isLoading = true;
             const token = localStorage.getItem("token");
+            alert(token)
 
             try {
                 const response = await axios.get(
