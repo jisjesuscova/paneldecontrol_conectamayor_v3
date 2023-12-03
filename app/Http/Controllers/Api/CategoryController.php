@@ -351,7 +351,7 @@ class CategoryController extends Controller
                 
                 if($request->hasFile('icon_image')) { 
                     Storage::disk('local')->putFileAs(
-                        'public/files',
+                        'public',
                         $request->icon_image,
                         $icon
                     );
@@ -359,7 +359,7 @@ class CategoryController extends Controller
 
                 if($request->hasFile('pdf')) { 
                     Storage::disk('local')->putFileAs(
-                        'public/files',
+                        'public',
                         $request->pdf,
                         $pdf
                     );
@@ -705,16 +705,20 @@ class CategoryController extends Controller
             }
 
             if($request->hasFile('icon_image')) { 
+                Storage::disk('local')->delete('public/'.$icon);
+
                 Storage::disk('local')->putFileAs(
-                    'public/files',
+                    'public',
                     $request->icon_image,
                     $icon
                 );
             }
 
             if($request->hasFile('pdf')) { 
+                Storage::disk('local')->delete('public/'.$pdf);
+
                 Storage::disk('local')->putFileAs(
-                    'public/files',
+                    'public',
                     $request->pdf,
                     $pdf
                 );
@@ -753,7 +757,6 @@ class CategoryController extends Controller
         
         if($category->delete()) {
             if ($icon != '') {
-                echo $icon;
                 Storage::disk('local')->delete('public/files/'.$icon);
             }
 

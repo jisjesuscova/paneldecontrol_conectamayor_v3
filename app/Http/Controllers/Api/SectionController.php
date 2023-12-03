@@ -199,16 +199,16 @@ class SectionController extends Controller
                 }
                 
                 if($section_to_copy->icon_type_id == 2) { 
-                    $original_image = 'public/files/' . $section_to_copy->icon;
+                    $original_image = 'public/' . $section_to_copy->icon;
                     $new_name_image = $icon;
-                    $copy_path = 'public/files/' . $new_name_image;
+                    $copy_path = 'public/' . $new_name_image;
                     File::copy(storage_path('app/' . $original_image), storage_path('app/' . $copy_path));
                 }
 
                 if($section_to_copy->content_type_id == 4) { 
-                    $original_image = 'public/files/' . $section_to_copy->pdf;
+                    $original_image = 'public/' . $section_to_copy->pdf;
                     $new_name_image = $pdf;
-                    $copy_path = 'public/files/' . $new_name_image;
+                    $copy_path = 'public/' . $new_name_image;
                     File::copy(storage_path('app/' . $original_image), storage_path('app/' . $copy_path));
                 }
 
