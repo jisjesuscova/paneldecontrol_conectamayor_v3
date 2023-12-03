@@ -83,13 +83,11 @@ export default {
         Logout() {
             const token = localStorage.getItem('token')
 
-            const formData = new FormData()
-            formData.append('id', 1)
+            alert(token)
 
-            axios.post('https://paneldecontrolem.cl/api/user/logout', formData, {
+            axios.post('https://paneldecontrolem.cl/api/user/logout', {
                 headers: {
-                    Authorization: `Bearer ${token}`,
-                    'Content-Type': 'multipart/form-data',
+                    Authorization: `Bearer ${token}`
                 },
             })
             .then(response => {
