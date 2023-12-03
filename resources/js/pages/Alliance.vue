@@ -208,16 +208,22 @@ export default {
             }
         },
         deleteAlliance(id) {
-            if (confirm("¿Estás seguro de que deseas eliminar el registro?")) {
-                const token = localStorage.getItem("token");
-                const headers = {
-                    Authorization: `Bearer ${token}`,
-                    accept: "application/json",
-                };
+            const token = localStorage.getItem("token");
 
-                this.$axios.delete("api/alliance/" + id, { headers }).then((res) => {
-                    this.getData();
-                });
+            if (token) {
+                if (confirm("¿Estás seguro de que deseas eliminar el registro?")) {
+                    
+                    const headers = {
+                        Authorization: `Bearer ${token}`,
+                        accept: "application/json",
+                    };
+
+                    this.$axios.delete("api/alliance/" + id, { headers }).then((res) => {
+                        this.getData();
+                    });
+                }
+            } else {
+                this.$router.push("/");
             }
         },
     },
