@@ -81,3 +81,4 @@ Route::post('user/logout', [\App\Http\Controllers\Api\UserController::class, 'lo
 Route::get('front_section', [\App\Http\Controllers\Api\FrontSectionController::class, 'index']);
 Route::get('front_section/show/{id}', [\App\Http\Controllers\Api\FrontSectionController::class, 'show']);
 Route::get('front_category/{id}', [\App\Http\Controllers\Api\FrontCategoryController::class, 'index']);
+Route::get('front_category/show/{id}', [\App\Http\Controllers\Api\FrontCategoryController::class, 'show']);

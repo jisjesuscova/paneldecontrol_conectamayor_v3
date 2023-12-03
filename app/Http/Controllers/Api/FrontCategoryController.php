@@ -25,4 +25,19 @@ class FrontCategoryController extends Controller
             'data' => $categories
         ], 200);
     }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(Request $request)
+    {
+        $id = $request->id;
+
+        $category = Category::find($id);
+
+        return response()->json([
+            'success' => true,
+            'data' => $category
+        ], 200);
+    }
 }
