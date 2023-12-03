@@ -119,7 +119,7 @@ export default {
             this.loading = true;
 
             axios
-                .post("https://binfrix.com/api/user/login", formData)
+                .post("https://paneldecontrolem.cl/api/user/login", formData)
                 .then((response) => {
                     console.log(response.data.data.user.name);
 
