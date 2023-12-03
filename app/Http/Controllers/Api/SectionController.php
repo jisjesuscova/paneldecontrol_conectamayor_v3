@@ -346,7 +346,7 @@ class SectionController extends Controller
                 
                 if($request->hasFile('icon_image')) { 
                     Storage::disk('local')->putFileAs(
-                        'public/files',
+                        'public',
                         $request->icon_image,
                         $icon
                     );
@@ -354,7 +354,7 @@ class SectionController extends Controller
 
                 if($request->hasFile('pdf')) { 
                     Storage::disk('local')->putFileAs(
-                        'public/files',
+                        'public',
                         $request->pdf,
                         $pdf
                     );
