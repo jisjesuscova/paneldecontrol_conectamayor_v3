@@ -83,20 +83,8 @@ export default {
         Logout() {
             const token = localStorage.getItem('token')
 
-            alert(token)
-
-            axios.post('https://paneldecontrolem.cl/api/user/logout', {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                },
-            })
-            .then(response => {
-                localStorage.removeItem('token');
-                window.location.href = '/';
-            })
-            .catch(error => {
-                console.log(error);
-            });
+            localStorage.removeItem('token');
+            window.location.href = '/';
         }
     },
     mounted() {

@@ -40,17 +40,6 @@ class UserController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
-     */
-    public function logout(Request $request)
-    {
-        Auth::logout();
-        return response()->json([
-            'message' => 'Successfully logged out',
-        ]);
-    }
-
-    /**
      * Show the form for creating a new resource.
      */
     public function create()

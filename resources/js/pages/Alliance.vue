@@ -183,22 +183,28 @@ export default {
             this.isLoading = true;
             const token = localStorage.getItem("token");
 
-            try {
-                const response = await axios.get(
-                    "https://paneldecontrolem.cl/api/alliance/",
-                    {
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                            accept: "application/json",
-                        },
-                    }
-                );
+            if (token) {
+                try {
+                    const response = await axios.get(
+                        "https://paneldecontrolem.cl/api/alliance/",
+                        {
+                            headers: {
+                                Authorization: `Bearer ${token}`,
+                                accept: "application/json",
+                            },
+                        }
+                    );
 
-                this.posts = response.data.data;
-                this.loading = false;
+                    this.posts = response.data.data;
+                    this.loading = false;
+                    this.isLoading = false;
+                } catch (error) {
+                    console.error("Error al obtener la lista de alianzas:", error);
+                }
+            } else {
+                this.$router.push("/");
                 this.isLoading = false;
-            } catch (error) {
-                console.error("Error al obtener la lista de alianzas:", error);
+                this.loading = false;
             }
         },
         deleteAlliance(id) {
