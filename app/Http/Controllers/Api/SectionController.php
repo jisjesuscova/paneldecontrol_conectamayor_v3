@@ -497,6 +497,7 @@ class SectionController extends Controller
         if ($icon != 'null' 
         && $icon != null 
         && $icon != '') {
+            $old_icon = $section->icon;
             $section->icon = $icon;
         }
 
@@ -551,6 +552,7 @@ class SectionController extends Controller
         if ($pdf != 'null' 
         && $pdf != null 
         && $pdf != '') {
+            $old_pdf = $section->pdf;
             $section->pdf = $pdf;
         }
 
@@ -694,16 +696,24 @@ class SectionController extends Controller
             }
 
             if($request->hasFile('icon_image')) { 
+                if ($icon != '') {
+                    Storage::disk('local')->delete('public/'.$old_icon);
+                }
+
                 Storage::disk('local')->putFileAs(
-                    'public/files',
+                    'public',
                     $request->icon_image,
                     $icon
                 );
             }
 
             if($request->hasFile('pdf')) { 
+                if ($pdf != '') {
+                    Storage::disk('local')->delete('public/'.$old_pdf);
+                }
+
                 Storage::disk('local')->putFileAs(
-                    'public/files',
+                    'public',
                     $request->pdf,
                     $pdf
                 );
@@ -742,12 +752,11 @@ class SectionController extends Controller
         
         if($section->delete()) {
             if ($icon != '') {
-                echo $icon;
-                Storage::disk('local')->delete('public/files/'.$icon);
+                Storage::disk('local')->delete('public/'.$icon);
             }
 
             if ($pdf != '') {
-                Storage::disk('local')->delete('public/files/'.$pdf);
+                Storage::disk('local')->delete('public/'.$pdf);
             }
         }
 
