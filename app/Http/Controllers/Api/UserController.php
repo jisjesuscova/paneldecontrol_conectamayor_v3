@@ -44,22 +44,10 @@ class UserController extends Controller
      */
     public function logout(Request $request)
     {
-        if (Auth::loginUsingId($request->id)) {
-            $token = Auth::user()->tokens()->delete();
-
-            return response()->json([
-                'success' => true,
-                'data' => [
-                    'user' => Auth::user(),
-                    'token' => $token
-                ]
-            ], 200);
-        }
-
+        Auth::logout();
         return response()->json([
-            'success' => false,
-            'message' => 'Invalid credentials'
-        ], 401);
+            'message' => 'Successfully logged out',
+        ]);
     }
 
     /**
