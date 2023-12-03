@@ -374,10 +374,10 @@
                                         <div class="row mt-12" v-if="this.content_type_input == 6">
                                             <div class="col-md-12">
                                                 <label for="phone_input"
-                                                    >Teléfono</label
+                                                    >Teléfono (Ejemplo: +56935665781)</label
                                                 >
                                                 <input
-                                                    type="number"
+                                                    type="text"
                                                     class="form-control"
                                                     v-model="phone_input"
                                                     placeholder="Teléfono"
