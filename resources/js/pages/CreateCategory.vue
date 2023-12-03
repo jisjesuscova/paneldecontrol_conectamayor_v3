@@ -688,44 +688,54 @@ export default {
             this.loading = true;
             const token = localStorage.getItem("token");
 
-            try {
-                const response = await axios.get(
-                    "https://paneldecontrolem.cl/api/category/search/" + this.section_input,
-                    {
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                            accept: "application/json",
-                        },
-                    }
-                );
+            if(token) {
+                try {
+                    const response = await axios.get(
+                        "https://paneldecontrolem.cl/api/category/search/" + this.section_input,
+                        {
+                            headers: {
+                                Authorization: `Bearer ${token}`,
+                                accept: "application/json",
+                            },
+                        }
+                    );
 
-                this.quantity = response.data.data.total;
-                this.quantity = this.quantity + 1;
-                this.position_input = this.quantity;
+                    this.quantity = response.data.data.total;
+                    this.quantity = this.quantity + 1;
+                    this.position_input = this.quantity;
+                    this.loading = false;
+                } catch (error) {
+                    console.error("Error al obtener la cantidad de categorias:", error);
+                }
+            } else {
+                this.$router.push("/login");
                 this.loading = false;
-            } catch (error) {
-                console.error("Error al obtener la cantidad de categorias:", error);
             }
         },
         async getRegions() {
             this.loading = true;
             const token = localStorage.getItem("token");
 
-            try {
-                const response = await axios.get(
-                    "https://paneldecontrolem.cl/api/region/",
-                    {
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                            accept: "application/json",
-                        },
-                    }
-                );
+            if(token) {
+                try {
+                    const response = await axios.get(
+                        "https://paneldecontrolem.cl/api/region/",
+                        {
+                            headers: {
+                                Authorization: `Bearer ${token}`,
+                                accept: "application/json",
+                            },
+                        }
+                    );
 
-                this.region_posts = response.data.data;
+                    this.region_posts = response.data.data;
+                    this.loading = false;
+                } catch (error) {
+                    console.error("Error al obtener la lista de regiones:", error);
+                }
+            } else {
+                this.$router.push("/login");
                 this.loading = false;
-            } catch (error) {
-                console.error("Error al obtener la lista de regiones:", error);
             }
         },
         async getCommunes() {
@@ -737,87 +747,97 @@ export default {
 
             const region_ids = region_data.split(',');
 
-            for (const region_id of region_ids) {
-                try {
-                    const response = await axios.get(
-                        "https://paneldecontrolem.cl/api/commune/" + region_id,
-                            {
-                                headers: {
-                                    Authorization: `Bearer ${token}`,
-                                    accept: "application/json",
-                                },
-                            }
-                        );
+            if(token) {
+                for (const region_id of region_ids) {
+                    try {
+                        const response = await axios.get(
+                            "https://paneldecontrolem.cl/api/commune/" + region_id,
+                                {
+                                    headers: {
+                                        Authorization: `Bearer ${token}`,
+                                        accept: "application/json",
+                                    },
+                                }
+                            );
 
-                    this.commune_posts = this.commune_posts.concat(response.data.data);
-                } catch (error) {
-                    console.error("Error al obtener la lista de comunas:", error);
+                        this.commune_posts = this.commune_posts.concat(response.data.data);
+                    } catch (error) {
+                        console.error("Error al obtener la lista de comunas:", error);
+                    }
                 }
+            } else {
+                this.$router.push("/login");
+                this.loading = false;
             }
         },
         async submit() {
             this.loading = true;
             const token = localStorage.getItem("token");
 
-            const formData = new FormData();
+            if (token) {
+                const formData = new FormData();
 
-            formData.append("section_id", this.section_input);
-            formData.append("status_id", 1);
-            formData.append("title", this.title_input);
-            formData.append("subtitle", this.subtitle_input);
-            formData.append("google_tag", this.google_tag_input);
-            formData.append("position", this.position_input);
-            formData.append("color", this.color);
-            formData.append("start_date", this.start_date_input);
-            formData.append("end_date", this.end_date_input);
-            formData.append("georeferencing_type_id", this.georeferencing_type_input);
-            formData.append("region_id", this.region_input);
-            formData.append("commune_id", this.commune_input);
-            formData.append("icon_status_id", this.icon_status_input);
-            formData.append("icon_type_id", this.icon_type_input);
-            formData.append("icon_image", this.icon_image);
-            formData.append("fa_icon", this.fa_icon_input);
-            formData.append("content_type_id", this.content_type_input);
-            formData.append("video_description", this.video_description_input);
-            formData.append("video_type_id", this.video_type_input);
-            formData.append("video_id", this.video_id_input);
-            formData.append("src_description", this.src_description_input);
-            formData.append("audio_src", this.audio_src_input);
-            formData.append("text_description", this.text_description);
-            formData.append("pdf_description", this.pdf_description_input);
-            formData.append("pdf", this.pdf);
-            formData.append("iframe_description", this.iframe_description_input);
-            formData.append("iframe_url", this.iframe_url_input);
-            formData.append("phone", this.phone_input);
-            formData.append("url_external_page", this.url_external_page_input);
-            formData.append("app_type_id", this.app_type_input);
-            formData.append("url_app", this.url_app_input);
-            formData.append("uri_app", this.uri_app_input);
-            formData.append("url_desktop_app", this.url_desktop_app_input);
-            formData.append("url_not_installed_app", this.url_not_installed_app_input);
-            formData.append("whatsapp_type_id", this.whatsapp_type_input);
-            formData.append("whatsapp_url", this.whatsapp_url_input);
+                formData.append("section_id", this.section_input);
+                formData.append("status_id", 1);
+                formData.append("title", this.title_input);
+                formData.append("subtitle", this.subtitle_input);
+                formData.append("google_tag", this.google_tag_input);
+                formData.append("position", this.position_input);
+                formData.append("color", this.color);
+                formData.append("start_date", this.start_date_input);
+                formData.append("end_date", this.end_date_input);
+                formData.append("georeferencing_type_id", this.georeferencing_type_input);
+                formData.append("region_id", this.region_input);
+                formData.append("commune_id", this.commune_input);
+                formData.append("icon_status_id", this.icon_status_input);
+                formData.append("icon_type_id", this.icon_type_input);
+                formData.append("icon_image", this.icon_image);
+                formData.append("fa_icon", this.fa_icon_input);
+                formData.append("content_type_id", this.content_type_input);
+                formData.append("video_description", this.video_description_input);
+                formData.append("video_type_id", this.video_type_input);
+                formData.append("video_id", this.video_id_input);
+                formData.append("src_description", this.src_description_input);
+                formData.append("audio_src", this.audio_src_input);
+                formData.append("text_description", this.text_description);
+                formData.append("pdf_description", this.pdf_description_input);
+                formData.append("pdf", this.pdf);
+                formData.append("iframe_description", this.iframe_description_input);
+                formData.append("iframe_url", this.iframe_url_input);
+                formData.append("phone", this.phone_input);
+                formData.append("url_external_page", this.url_external_page_input);
+                formData.append("app_type_id", this.app_type_input);
+                formData.append("url_app", this.url_app_input);
+                formData.append("uri_app", this.uri_app_input);
+                formData.append("url_desktop_app", this.url_desktop_app_input);
+                formData.append("url_not_installed_app", this.url_not_installed_app_input);
+                formData.append("whatsapp_type_id", this.whatsapp_type_input);
+                formData.append("whatsapp_url", this.whatsapp_url_input);
 
-            try {
-                const response = await axios.post(
-                    "https://paneldecontrolem.cl/api/category/store",
-                    formData,
-                    {
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                            "Content-Type": "multipart/form-data",
-                        },
-                    }
-                );
+                try {
+                    const response = await axios.post(
+                        "https://paneldecontrolem.cl/api/category/store",
+                        formData,
+                        {
+                            headers: {
+                                Authorization: `Bearer ${token}`,
+                                "Content-Type": "multipart/form-data",
+                            },
+                        }
+                    );
 
-                this.posts = response.data.data;
+                    this.posts = response.data.data;
+                    this.loading = false;
+
+                    localStorage.setItem("created_category", 1);
+
+                    this.$router.push("/categories");
+                } catch (error) {
+                    console.error("Error al guardar la categoría:", error);
+                }
+            } else {
+                this.$router.push("/login");
                 this.loading = false;
-
-                localStorage.setItem("created_category", 1);
-
-                this.$router.push("/categories");
-            } catch (error) {
-                console.error("Error al guardar la categoría:", error);
             }
         },
         async getSections() {
@@ -825,25 +845,31 @@ export default {
             this.isLoading = true;
             const token = localStorage.getItem("token");
 
-            try {
-                const response = await axios.get(
-                    "https://paneldecontrolem.cl/api/section/all",
-                    {
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                            accept: "application/json",
-                        },
-                    }
-                );
+            if(token) {
+                try {
+                    const response = await axios.get(
+                        "https://paneldecontrolem.cl/api/section/all",
+                        {
+                            headers: {
+                                Authorization: `Bearer ${token}`,
+                                accept: "application/json",
+                            },
+                        }
+                    );
 
-                this.section_posts = response.data.data;
+                    this.section_posts = response.data.data;
+                    this.loading = false;
+                    this.isLoading = false;
+                } catch (error) {
+                    console.error(
+                        "Error al obtener la lista de secciones:",
+                        error
+                    );
+                }
+            } else {
+                this.$router.push("/login");
                 this.loading = false;
                 this.isLoading = false;
-            } catch (error) {
-                console.error(
-                    "Error al obtener la lista de secciones:",
-                    error
-                );
             }
         },
     },

@@ -255,12 +255,38 @@ export default {
     },
     methods: {
         async copyPost(id) {
-            if (confirm("¿Estás seguro de que deseas copiar la categoría?")) {
-                const token = localStorage.getItem("token");
-                
+            const token = localStorage.getItem("token");
+
+            if(token) {
+                if (confirm("¿Estás seguro de que deseas copiar la categoría?")) {
+                    
+                    try {
+                        const response = await axios.get(
+                            "https://paneldecontrolem.cl/api/category/copy/" + id,
+                            {
+                                headers: {
+                                    Authorization: `Bearer ${token}`,
+                                    accept: "application/json",
+                                },
+                            }
+                        );
+                        
+                        this.submit();
+                    } catch (error) {
+                        console.error("Error al copiar la categoría:", error);
+                    }
+                }
+            } else {
+                this.$router.push("/login");
+            }
+        },
+        async moveDown(id) {
+            const token = localStorage.getItem("token");
+            
+            if (token) {
                 try {
                     const response = await axios.get(
-                        "https://paneldecontrolem.cl/api/category/copy/" + id,
+                        "https://paneldecontrolem.cl/api/category/move_down/" + this.section_input + "/" + id,
                         {
                             headers: {
                                 Authorization: `Bearer ${token}`,
@@ -269,65 +295,36 @@ export default {
                         }
                     );
                     
-                    this.submit();
-                } catch (error) {
-                    console.error("Error al copiar la categoría:", error);
-                }
-            }
-        },
-        async moveDown(id) {
-            const token = localStorage.getItem("token");
-            
-            try {
-                const response = await axios.get(
-                    "https://paneldecontrolem.cl/api/category/move_down/" + this.section_input + "/" + id,
-                    {
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                            accept: "application/json",
-                        },
+                    try {
+                        const response = await axios.get(
+                            "https://paneldecontrolem.cl/api/category/search/" + this.section_input,
+                            {
+                                headers: {
+                                    Authorization: `Bearer ${token}`,
+                                    accept: "application/json",
+                                },
+                            }
+                        );
+
+                        this.posts = response.data.data;
+
+                    } catch (error) {
+                        console.error("Error al obtener la lista de categorias:", error);
                     }
-                );
-
-                
-                try {
-                    const response = await axios.get(
-                        "https://paneldecontrolem.cl/api/category/search/" + this.section_input,
-                        {
-                            headers: {
-                                Authorization: `Bearer ${token}`,
-                                accept: "application/json",
-                            },
-                        }
-                    );
-
-                    this.posts = response.data.data;
-
                 } catch (error) {
-                    console.error("Error al obtener la lista de categorias:", error);
+                    console.error("Error al mover la categoría:", error);
                 }
-            } catch (error) {
-                console.error("Error al mover la categoría:", error);
+            } else {
+                this.$router.push("/login");
             }
         },
         async moveUp(id) {
             const token = localStorage.getItem("token");
             
-            try {
-                const response = await axios.get(
-                    "https://paneldecontrolem.cl/api/category/move_up/" + this.section_input + "/" + id,
-                    {
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                            accept: "application/json",
-                        },
-                    }
-                );
-
-                
+            if(token) {
                 try {
                     const response = await axios.get(
-                        "https://paneldecontrolem.cl/api/category/search/" + this.section_input,
+                        "https://paneldecontrolem.cl/api/category/move_up/" + this.section_input + "/" + id,
                         {
                             headers: {
                                 Authorization: `Bearer ${token}`,
@@ -336,13 +333,28 @@ export default {
                         }
                     );
 
-                    this.posts = response.data.data;
+                    
+                    try {
+                        const response = await axios.get(
+                            "https://paneldecontrolem.cl/api/category/search/" + this.section_input,
+                            {
+                                headers: {
+                                    Authorization: `Bearer ${token}`,
+                                    accept: "application/json",
+                                },
+                            }
+                        );
 
+                        this.posts = response.data.data;
+
+                    } catch (error) {
+                        console.error("Error al obtener la lista de categorias:", error);
+                    }
                 } catch (error) {
-                    console.error("Error al obtener la lista de categorias:", error);
+                    console.error("Error al mover la categoría:", error);
                 }
-            } catch (error) {
-                console.error("Error al mover la categoría:", error);
+            } else {
+                this.$router.push("/login");
             }
         },
         updatePage() {
@@ -353,47 +365,55 @@ export default {
             this.isLoading = true;
             const token = localStorage.getItem("token");
 
-            try {
-                const response = await axios.get(
-                    "https://paneldecontrolem.cl/api/category/",
-                    {
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                            accept: "application/json",
-                        },
-                    }
-                );
+            if(token) {
+                try {
+                    const response = await axios.get(
+                        "https://paneldecontrolem.cl/api/category/",
+                        {
+                            headers: {
+                                Authorization: `Bearer ${token}`,
+                                accept: "application/json",
+                            },
+                        }
+                    );
 
-                this.posts = response.data.data;
-                this.loading = false;
-                this.isLoading = false;
-            } catch (error) {
-                console.error(
-                    "Error al obtener la lista de categorías:",
-                    error
-                );
+                    this.posts = response.data.data;
+                    this.loading = false;
+                    this.isLoading = false;
+                } catch (error) {
+                    console.error(
+                        "Error al obtener la lista de categorías:",
+                        error
+                    );
+                }
+            } else {
+                this.$router.push("/login");
             }
         },
         async getSections() {
             const token = localStorage.getItem("token");
 
-            try {
-                const response = await axios.get(
-                    "https://paneldecontrolem.cl/api/section/all",
-                    {
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                            accept: "application/json",
-                        },
-                    }
-                );
+            if(token) {
+                try {
+                    const response = await axios.get(
+                        "https://paneldecontrolem.cl/api/section/all",
+                        {
+                            headers: {
+                                Authorization: `Bearer ${token}`,
+                                accept: "application/json",
+                            },
+                        }
+                    );
 
-                this.section_posts = response.data.data;
-            } catch (error) {
-                console.error(
-                    "Error al obtener la lista de secciones:",
-                    error
-                );
+                    this.section_posts = response.data.data;
+                } catch (error) {
+                    console.error(
+                        "Error al obtener la lista de secciones:",
+                        error
+                    );
+                }
+            } else {
+                this.$router.push("/login");
             }
         },
         async submit() {
@@ -401,40 +421,51 @@ export default {
             this.isLoading = true;
             const token = localStorage.getItem("token");
 
-            try {
-                const response = await axios.get(
-                    "https://paneldecontrolem.cl/api/category/search/" + this.section_input,
-                    {
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                            accept: "application/json",
-                        },
-                    }
-                );
+            if(token) {
+                try {
+                    const response = await axios.get(
+                        "https://paneldecontrolem.cl/api/category/search/" + this.section_input,
+                        {
+                            headers: {
+                                Authorization: `Bearer ${token}`,
+                                accept: "application/json",
+                            },
+                        }
+                    );
 
-                this.posts = response.data.data;
+                    this.posts = response.data.data;
+                    this.loading = false;
+                    this.isLoading = false;
+                } catch (error) {
+                    console.error(
+                        "Error al obtener la lista de secciones:",
+                        error
+                    );
+                }
+            } else {
                 this.loading = false;
                 this.isLoading = false;
-            } catch (error) {
-                console.error(
-                    "Error al obtener la lista de secciones:",
-                    error
-                );
+                this.$router.push("/login");
             }
         },
         deleteCategory(id) {
-            if (confirm("¿Estás seguro de que deseas eliminar el registro?")) {
-                const token = localStorage.getItem("token");
-                const headers = {
-                    Authorization: `Bearer ${token}`,
-                    accept: "application/json",
-                };
+            const token = localStorage.getItem("token");
 
-                this.$axios
-                    .delete("api/category/" + id, { headers })
-                    .then((res) => {
-                        this.getData();
-                    });
+            if (token) {
+                if (confirm("¿Estás seguro de que deseas eliminar el registro?")) {
+                    const headers = {
+                        Authorization: `Bearer ${token}`,
+                        accept: "application/json",
+                    };
+
+                    this.$axios
+                        .delete("api/category/" + id, { headers })
+                        .then((res) => {
+                            this.getData();
+                        });
+                }
+            } else {
+                this.$router.push("/login");
             }
         },
     },

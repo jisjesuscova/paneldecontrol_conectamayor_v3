@@ -231,37 +231,43 @@ export default {
             this.loading = true;
             const token = localStorage.getItem("token");
 
-            const formData = new FormData();
+            if (token) {
+                const formData = new FormData();
 
-            formData.append("rut", this.rut_input);
-            formData.append("name", this.name_input);
-            formData.append("alias", this.alia_input);
-            formData.append("contact", this.contact_input);
-            formData.append("contact_email", this.contact_email_input);
-            formData.append("contact_phone", this.contact_phone_input);
-            formData.append("start_date", this.start_date_input);
-            formData.append("end_date", this.end_date_input);
+                formData.append("rut", this.rut_input);
+                formData.append("name", this.name_input);
+                formData.append("alias", this.alia_input);
+                formData.append("contact", this.contact_input);
+                formData.append("contact_email", this.contact_email_input);
+                formData.append("contact_phone", this.contact_phone_input);
+                formData.append("start_date", this.start_date_input);
+                formData.append("end_date", this.end_date_input);
 
-            try {
-                const response = await axios.post(
-                    "https://paneldecontrolem.cl/api/alliance/" + this.$route.params.id,
-                    formData,
-                    {
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                            "Content-Type": "multipart/form-data",
-                        },
-                    }
-                );
+                try {
+                    const response = await axios.post(
+                        "https://paneldecontrolem.cl/api/alliance/" + this.$route.params.id,
+                        formData,
+                        {
+                            headers: {
+                                Authorization: `Bearer ${token}`,
+                                "Content-Type": "multipart/form-data",
+                            },
+                        }
+                    );
 
-                this.posts = response.data.data;
+                    this.posts = response.data.data;
+                    this.loading = false;
+
+                    localStorage.setItem("updated_alliance", 1);
+
+                    this.$router.push("/alliances");
+                } catch (error) {
+                    console.error("Error al guardar la alianza:", error);
+                }
+            } else {
+                this.$router.push("/");
+                this.isLoading = false;
                 this.loading = false;
-
-                localStorage.setItem("updated_alliance", 1);
-
-                this.$router.push("/alliances");
-            } catch (error) {
-                console.error("Error al guardar la alianza:", error);
             }
         },
         async getData() {

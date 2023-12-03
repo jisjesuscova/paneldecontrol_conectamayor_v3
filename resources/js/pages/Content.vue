@@ -269,44 +269,39 @@ export default {
     },
     methods: {
         async copyPost(id) {
-            if (confirm("¿Estás seguro de que deseas copiar el contenido?")) {
-                const token = localStorage.getItem("token");
-                
-                try {
-                    const response = await axios.get(
-                        "https://paneldecontrolem.cl/api/content/copy/" + id,
-                        {
-                            headers: {
-                                Authorization: `Bearer ${token}`,
-                                accept: "application/json",
-                            },
-                        }
-                    );
-                    
-                    this.submit();
-                } catch (error) {
-                    console.error("Error al copiar el contenido:", error);
+            const token = localStorage.getItem("token");
+
+            if (token) {
+                if (confirm("¿Estás seguro de que deseas copiar el contenido?")) {
+                    try {
+                        const response = await axios.get(
+                            "https://paneldecontrolem.cl/api/content/copy/" + id,
+                            {
+                                headers: {
+                                    Authorization: `Bearer ${token}`,
+                                    accept: "application/json",
+                                },
+                            }
+                        );
+                        
+                        this.submit();
+                    } catch (error) {
+                        console.error("Error al copiar el contenido:", error);
+                    }
                 }
+            } else {
+                this.$router.push("/login");
+                this.isLoading = false;
+                this.loading = false;
             }
         },
         async moveDown(id) {
             const token = localStorage.getItem("token");
             
-            try {
-                const response = await axios.get(
-                    "https://paneldecontrolem.cl/api/content/move_down/" + this.section_input + "/" + this.category_input + "/" + id,
-                    {
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                            accept: "application/json",
-                        },
-                    }
-                );
-
-                
+            if (token) {
                 try {
                     const response = await axios.get(
-                        "https://paneldecontrolem.cl/api/content/search/" + this.section_input + "/" + this.category_input,
+                        "https://paneldecontrolem.cl/api/content/move_down/" + this.section_input + "/" + this.category_input + "/" + id,
                         {
                             headers: {
                                 Authorization: `Bearer ${token}`,
@@ -315,33 +310,39 @@ export default {
                         }
                     );
 
-                    this.posts = response.data.data;
+                    
+                    try {
+                        const response = await axios.get(
+                            "https://paneldecontrolem.cl/api/content/search/" + this.section_input + "/" + this.category_input,
+                            {
+                                headers: {
+                                    Authorization: `Bearer ${token}`,
+                                    accept: "application/json",
+                                },
+                            }
+                        );
 
+                        this.posts = response.data.data;
+
+                    } catch (error) {
+                        console.error("Error al obtener la lista de contenidos:", error);
+                    }
                 } catch (error) {
-                    console.error("Error al obtener la lista de contenidos:", error);
+                    console.error("Error al mover el contenido:", error);
                 }
-            } catch (error) {
-                console.error("Error al mover el contenido:", error);
+            } else {
+                this.$router.push("/login");
+                this.isLoading = false;
+                this.loading = false;
             }
         },
         async moveUp(id) {
             const token = localStorage.getItem("token");
             
-            try {
-                const response = await axios.get(
-                    "https://paneldecontrolem.cl/api/content/move_up/" + this.section_input + "/" + this.category_input + "/" + id,
-                    {
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                            accept: "application/json",
-                        },
-                    }
-                );
-
-                
+            if (token) {
                 try {
                     const response = await axios.get(
-                        "https://paneldecontrolem.cl/api/content/search/" + this.section_input + "/" + this.category_input,
+                        "https://paneldecontrolem.cl/api/content/move_up/" + this.section_input + "/" + this.category_input + "/" + id,
                         {
                             headers: {
                                 Authorization: `Bearer ${token}`,
@@ -350,13 +351,30 @@ export default {
                         }
                     );
 
-                    this.posts = response.data.data;
+                    
+                    try {
+                        const response = await axios.get(
+                            "https://paneldecontrolem.cl/api/content/search/" + this.section_input + "/" + this.category_input,
+                            {
+                                headers: {
+                                    Authorization: `Bearer ${token}`,
+                                    accept: "application/json",
+                                },
+                            }
+                        );
 
+                        this.posts = response.data.data;
+
+                    } catch (error) {
+                        console.error("Error al obtener la lista de contenidos:", error);
+                    }
                 } catch (error) {
-                    console.error("Error al obtener la lista de contenidos:", error);
+                    console.error("Error al mover el contenido:", error);
                 }
-            } catch (error) {
-                console.error("Error al mover el contenido:", error);
+            } else {
+                this.$router.push("/login");
+                this.isLoading = false;
+                this.loading = false;
             }
         },
         updatePage() {
@@ -367,69 +385,87 @@ export default {
             this.isLoading = true;
             const token = localStorage.getItem("token");
 
-            try {
-                const response = await axios.get(
-                    "https://paneldecontrolem.cl/api/content/",
-                    {
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                            accept: "application/json",
-                        },
-                    }
-                );
+            if (token) {
+                try {
+                    const response = await axios.get(
+                        "https://paneldecontrolem.cl/api/content/",
+                        {
+                            headers: {
+                                Authorization: `Bearer ${token}`,
+                                accept: "application/json",
+                            },
+                        }
+                    );
 
-                this.posts = response.data.data;
-                this.loading = false;
+                    this.posts = response.data.data;
+                    this.loading = false;
+                    this.isLoading = false;
+                } catch (error) {
+                    console.error(
+                        "Error al obtener la lista de contenidos:",
+                        error
+                    );
+                }
+            } else {
+                this.$router.push("/login");
                 this.isLoading = false;
-            } catch (error) {
-                console.error(
-                    "Error al obtener la lista de contenidos:",
-                    error
-                );
+                this.loading = false;
             }
         },
         async getSections() {
             const token = localStorage.getItem("token");
 
-            try {
-                const response = await axios.get(
-                    "https://paneldecontrolem.cl/api/section/all",
-                    {
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                            accept: "application/json",
-                        },
-                    }
-                );
+            if (token) {
+                try {
+                    const response = await axios.get(
+                        "https://paneldecontrolem.cl/api/section/all",
+                        {
+                            headers: {
+                                Authorization: `Bearer ${token}`,
+                                accept: "application/json",
+                            },
+                        }
+                    );
 
-                this.section_posts = response.data.data;
-            } catch (error) {
-                console.error(
-                    "Error al obtener la lista de secciones:",
-                    error
-                );
+                    this.section_posts = response.data.data;
+                } catch (error) {
+                    console.error(
+                        "Error al obtener la lista de secciones:",
+                        error
+                    );
+                }
+            } else {
+                this.$router.push("/login");
+                this.isLoading = false;
+                this.loading = false;
             }
         },
         async getCategories() {
             const token = localStorage.getItem("token");
 
-            try {
-                const response = await axios.get(
-                    "https://paneldecontrolem.cl/api/category/all/" + this.section_input,
-                    {
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                            accept: "application/json",
-                        },
-                    }
-                );
+            if (token) {
+                try {
+                    const response = await axios.get(
+                        "https://paneldecontrolem.cl/api/category/all/" + this.section_input,
+                        {
+                            headers: {
+                                Authorization: `Bearer ${token}`,
+                                accept: "application/json",
+                            },
+                        }
+                    );
 
-                this.category_posts = response.data.data;
-            } catch (error) {
-                console.error(
-                    "Error al obtener la lista de categorias:",
-                    error
-                );
+                    this.category_posts = response.data.data;
+                } catch (error) {
+                    console.error(
+                        "Error al obtener la lista de categorias:",
+                        error
+                    );
+                }
+            } else {
+                this.$router.push("/login");
+                this.isLoading = false;
+                this.loading = false;
             }
         },
         async submit() {
@@ -437,40 +473,54 @@ export default {
             this.isLoading = true;
             const token = localStorage.getItem("token");
 
-            try {
-                const response = await axios.get(
-                    "https://paneldecontrolem.cl/api/content/search/" + this.section_input + "/" + this.category_input,
-                    {
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                            accept: "application/json",
-                        },
-                    }
-                );
+            if (token) {
+                try {
+                    const response = await axios.get(
+                        "https://paneldecontrolem.cl/api/content/search/" + this.section_input + "/" + this.category_input,
+                        {
+                            headers: {
+                                Authorization: `Bearer ${token}`,
+                                accept: "application/json",
+                            },
+                        }
+                    );
 
-                this.posts = response.data.data;
-                this.loading = false;
+                    this.posts = response.data.data;
+                    this.loading = false;
+                    this.isLoading = false;
+                } catch (error) {
+                    console.error(
+                        "Error al obtener la lista de secciones:",
+                        error
+                    );
+                }
+            } else {
+                this.$router.push("/login");
                 this.isLoading = false;
-            } catch (error) {
-                console.error(
-                    "Error al obtener la lista de secciones:",
-                    error
-                );
+                this.loading = false;
             }
         },
         deleteCategory(id) {
-            if (confirm("¿Estás seguro de que deseas eliminar el registro?")) {
-                const token = localStorage.getItem("token");
-                const headers = {
-                    Authorization: `Bearer ${token}`,
-                    accept: "application/json",
-                };
+            const token = localStorage.getItem("token");
+            
+            if (token) {
+                if (confirm("¿Estás seguro de que deseas eliminar el registro?")) {
+                    
+                    const headers = {
+                        Authorization: `Bearer ${token}`,
+                        accept: "application/json",
+                    };
 
-                this.$axios
-                    .delete("api/category/" + id, { headers })
-                    .then((res) => {
-                        this.getData();
-                    });
+                    this.$axios
+                        .delete("api/category/" + id, { headers })
+                        .then((res) => {
+                            this.getData();
+                        });
+                }
+            } else {
+                this.$router.push("/login");
+                this.isLoading = false;
+                this.loading = false;
             }
         },
     },

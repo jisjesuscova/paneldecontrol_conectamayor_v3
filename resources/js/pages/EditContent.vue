@@ -687,44 +687,56 @@ export default {
         async getSections() {
             const token = localStorage.getItem("token");
 
-            try {
-                const response = await axios.get(
-                    "https://paneldecontrolem.cl/api/section/all",
-                    {
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                            accept: "application/json",
-                        },
-                    }
-                );
+            if(token) {
+                try {
+                    const response = await axios.get(
+                        "https://paneldecontrolem.cl/api/section/all",
+                        {
+                            headers: {
+                                Authorization: `Bearer ${token}`,
+                                accept: "application/json",
+                            },
+                        }
+                    );
 
-                this.section_posts = response.data.data;
-            } catch (error) {
-                console.error(
-                    "Error al obtener la lista de secciones:",
-                    error
-                );
+                    this.section_posts = response.data.data;
+                } catch (error) {
+                    console.error(
+                        "Error al obtener la lista de secciones:",
+                        error
+                    );
+                }
+            } else {
+                this.$router.push("/login");
+                this.isLoading = false;
+                this.loading = false;
             }
         },
         async getRegions() {
             this.loading = true;
             const token = localStorage.getItem("token");
 
-            try {
-                const response = await axios.get(
-                    "https://paneldecontrolem.cl/api/region/",
-                    {
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                            accept: "application/json",
-                        },
-                    }
-                );
+            if(token) {
+                try {
+                    const response = await axios.get(
+                        "https://paneldecontrolem.cl/api/region/",
+                        {
+                            headers: {
+                                Authorization: `Bearer ${token}`,
+                                accept: "application/json",
+                            },
+                        }
+                    );
 
-                this.region_posts = response.data.data;
+                    this.region_posts = response.data.data;
+                    this.loading = false;
+                } catch (error) {
+                    console.error("Error al obtener la lista de regiones:", error);
+                }
+            } else {
+                this.$router.push("/login");
+                this.isLoading = false;
                 this.loading = false;
-            } catch (error) {
-                console.error("Error al obtener la lista de regiones:", error);
             }
         },
         async getCommunes() {
@@ -736,22 +748,28 @@ export default {
 
             const region_ids = region_data.split(',');
 
-            for (const region_id of region_ids) {
-                try {
-                const response = await axios.get(
-                    "https://paneldecontrolem.cl/api/commune/" + region_id,
-                        {
-                            headers: {
-                                Authorization: `Bearer ${token}`,
-                                accept: "application/json",
-                            },
-                        }
-                    );
+            if (token) {
+                for (const region_id of region_ids) {
+                    try {
+                    const response = await axios.get(
+                        "https://paneldecontrolem.cl/api/commune/" + region_id,
+                            {
+                                headers: {
+                                    Authorization: `Bearer ${token}`,
+                                    accept: "application/json",
+                                },
+                            }
+                        );
 
-                    this.commune_posts = this.commune_posts.concat(response.data.data);
-                } catch (error) {
-                    console.error("Error al obtener la lista de comunas:", error);
+                        this.commune_posts = this.commune_posts.concat(response.data.data);
+                    } catch (error) {
+                        console.error("Error al obtener la lista de comunas:", error);
+                    }
                 }
+            } else {
+                this.$router.push("/login");
+                this.isLoading = false;
+                this.loading = false;
             }
         },
         async getSelectedRegionsCommunes() {
@@ -759,199 +777,214 @@ export default {
 
             this.commune_posts = [];
 
-            // Obtén las comunas asociadas a las regiones seleccionadas
-            for (const region_id of this.region_input) {
-                try {
-                const response = await axios.get(
-                    "https://paneldecontrolem.cl/api/commune/" + region_id,
-                    {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                        accept: "application/json",
-                    },
+            if(token) {
+                for (const region_id of this.region_input) {
+                    try {
+                    const response = await axios.get(
+                        "https://paneldecontrolem.cl/api/commune/" + region_id,
+                        {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                            accept: "application/json",
+                        },
+                        }
+                    );
+
+                    // Concatena las comunas obtenidas a la lista existente
+                    this.commune_posts = this.commune_posts.concat(response.data.data);
+                    } catch (error) {
+                    console.error("Error al obtener la lista de comunas:", error);
                     }
-                );
+                }
 
-                // Concatena las comunas obtenidas a la lista existente
-                this.commune_posts = this.commune_posts.concat(response.data.data);
+                // Obtiene las comunas seleccionadas asociadas a la sección
+                try {
+                    const response = await axios.get(
+                    "https://paneldecontrolem.cl/api/category_commune/" + this.$route.params.id,
+                    {
+                        headers: {
+                        accept: "application/json",
+                        Authorization: `Bearer ${token}`,
+                        },
+                    }
+                    );
+
+                    this.commune_input = response.data.data.map(commune => commune.commune_id);
                 } catch (error) {
-                console.error("Error al obtener la lista de comunas:", error);
+                    if (error.message == "Request failed with status code 401") {
+                    localStorage.removeItem("accessToken");
+                    } else {
+                    console.error("Error al obtener los datos de las comunas:", error);
+                    }
                 }
-            }
-
-            // Obtiene las comunas seleccionadas asociadas a la sección
-            try {
-                const response = await axios.get(
-                "https://paneldecontrolem.cl/api/category_commune/" + this.$route.params.id,
-                {
-                    headers: {
-                    accept: "application/json",
-                    Authorization: `Bearer ${token}`,
-                    },
-                }
-                );
-
-                this.commune_input = response.data.data.map(commune => commune.commune_id);
-            } catch (error) {
-                if (error.message == "Request failed with status code 401") {
-                localStorage.removeItem("accessToken");
-                } else {
-                console.error("Error al obtener los datos de las comunas:", error);
-                }
+            } else {
+                this.$router.push("/login");
+                this.isLoading = false;
+                this.loading = false;
             }
         },
         async submit() {
             this.loading = true;
             const token = localStorage.getItem("token");
 
-            const formData = new FormData();
+            if(token) {
+                const formData = new FormData();
 
-            formData.append("section_id", this.section_input);
-            formData.append("status_id", 1);
-            formData.append("title", this.title_input);
-            formData.append("subtitle", this.subtitle_input);
-            formData.append("google_tag", this.google_tag_input);
-            formData.append("position", this.position_input);
-            formData.append("color", this.color);
-            formData.append("start_date", this.start_date_input);
-            formData.append("end_date", this.end_date_input);
-            formData.append("georeferencing_type_id", this.georeferencing_type_input);
-            formData.append("region_id", this.region_input);
-            formData.append("commune_id", this.commune_input);
-            formData.append("icon_status_id", this.icon_status_input);
-            formData.append("icon_type_id", this.icon_type_input);
-            formData.append("icon_image", this.icon_image);
-            formData.append("fa_icon", this.fa_icon_input);
-            formData.append("content_type_id", this.content_type_input);
-            formData.append("video_description", this.video_description_input);
-            formData.append("video_type_id", this.video_type_input);
-            formData.append("video_id", this.video_id_input);
-            formData.append("src_description", this.src_description_input);
-            formData.append("audio_src", this.audio_src_input);
-            formData.append("text_description", this.text_description);
-            formData.append("pdf_description", this.pdf_description_input);
-            formData.append("pdf", this.pdf);
-            formData.append("iframe_description", this.iframe_description_input);
-            formData.append("iframe_url", this.iframe_url_input);
-            formData.append("phone", this.phone_input);
-            formData.append("url_external_page", this.url_external_page_input);
-            formData.append("app_type_id", this.app_type_input);
-            formData.append("url_app", this.url_app_input);
-            formData.append("uri_app", this.uri_app_input);
-            formData.append("url_desktop_app", this.url_desktop_app_input);
-            formData.append("url_not_installed_app", this.url_not_installed_app_input);
-            formData.append("whatsapp_type_id", this.whatsapp_type_input);
-            formData.append("whatsapp_url", this.whatsapp_url_input);
+                formData.append("section_id", this.section_input);
+                formData.append("status_id", 1);
+                formData.append("title", this.title_input);
+                formData.append("subtitle", this.subtitle_input);
+                formData.append("google_tag", this.google_tag_input);
+                formData.append("position", this.position_input);
+                formData.append("color", this.color);
+                formData.append("start_date", this.start_date_input);
+                formData.append("end_date", this.end_date_input);
+                formData.append("georeferencing_type_id", this.georeferencing_type_input);
+                formData.append("region_id", this.region_input);
+                formData.append("commune_id", this.commune_input);
+                formData.append("icon_status_id", this.icon_status_input);
+                formData.append("icon_type_id", this.icon_type_input);
+                formData.append("icon_image", this.icon_image);
+                formData.append("fa_icon", this.fa_icon_input);
+                formData.append("content_type_id", this.content_type_input);
+                formData.append("video_description", this.video_description_input);
+                formData.append("video_type_id", this.video_type_input);
+                formData.append("video_id", this.video_id_input);
+                formData.append("src_description", this.src_description_input);
+                formData.append("audio_src", this.audio_src_input);
+                formData.append("text_description", this.text_description);
+                formData.append("pdf_description", this.pdf_description_input);
+                formData.append("pdf", this.pdf);
+                formData.append("iframe_description", this.iframe_description_input);
+                formData.append("iframe_url", this.iframe_url_input);
+                formData.append("phone", this.phone_input);
+                formData.append("url_external_page", this.url_external_page_input);
+                formData.append("app_type_id", this.app_type_input);
+                formData.append("url_app", this.url_app_input);
+                formData.append("uri_app", this.uri_app_input);
+                formData.append("url_desktop_app", this.url_desktop_app_input);
+                formData.append("url_not_installed_app", this.url_not_installed_app_input);
+                formData.append("whatsapp_type_id", this.whatsapp_type_input);
+                formData.append("whatsapp_url", this.whatsapp_url_input);
 
-            try {
-                const response = await axios.post(
-                    "https://paneldecontrolem.cl/api/category/" + this.$route.params.id,
-                    formData,
-                    {
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                            "Content-Type": "multipart/form-data",
-                        },
-                    }
-                );
+                try {
+                    const response = await axios.post(
+                        "https://paneldecontrolem.cl/api/category/" + this.$route.params.id,
+                        formData,
+                        {
+                            headers: {
+                                Authorization: `Bearer ${token}`,
+                                "Content-Type": "multipart/form-data",
+                            },
+                        }
+                    );
 
-                this.posts = response.data.data;
+                    this.posts = response.data.data;
+                    this.loading = false;
+
+                    localStorage.setItem("updated_category", 1);
+
+                    this.$router.push("/categories");
+                } catch (error) {
+                    console.error("Error al actualizar la categoría:", error);
+                }
+            } else {
                 this.loading = false;
-
-                localStorage.setItem("updated_category", 1);
-
-                this.$router.push("/categories");
-            } catch (error) {
-                console.error("Error al actualizar la categoría:", error);
             }
         },
         async getData() {
             const token = localStorage.getItem("token");
 
-            try {
-                const response = await axios.get(
-                    "https://paneldecontrolem.cl/api/category/" + this.$route.params.id,
-                    {
-                        headers: {
-                            accept: "application/json",
-                            Authorization: `Bearer ${token}`,
-                        },
-                    }
-                );
+            if(token) {
+                try {
+                    const response = await axios.get(
+                        "https://paneldecontrolem.cl/api/category/" + this.$route.params.id,
+                        {
+                            headers: {
+                                accept: "application/json",
+                                Authorization: `Bearer ${token}`,
+                            },
+                        }
+                    );
+                    
+                    this.section_input = response.data.data.section_id;
+                    this.status_id = response.data.data.status_id;
+                    this.title_input = response.data.data.title;
+                    this.subtitle_input = response.data.data.subtitle;
+                    this.google_tag_input = response.data.data.google_tag;
+                    this.position_input = response.data.data.position;
+                    this.color = response.data.data.color;
+                    this.start_date_input = response.data.data.start_date;
+                    this.end_date_input = response.data.data.end_date;
+                    this.georeferencing_type_input = response.data.data.georeferencing_type_id;
+                    this.icon_status_input = response.data.data.icon_status_id;
+                    this.icon_type_input = response.data.data.icon_type_id;
+                    this.fa_icon_input = response.data.data.icon;
                 
-                this.section_input = response.data.data.section_id;
-                this.status_id = response.data.data.status_id;
-                this.title_input = response.data.data.title;
-                this.subtitle_input = response.data.data.subtitle;
-                this.google_tag_input = response.data.data.google_tag;
-                this.position_input = response.data.data.position;
-                this.color = response.data.data.color;
-                this.start_date_input = response.data.data.start_date;
-                this.end_date_input = response.data.data.end_date;
-                this.georeferencing_type_input = response.data.data.georeferencing_type_id;
-                this.icon_status_input = response.data.data.icon_status_id;
-                this.icon_type_input = response.data.data.icon_type_id;
-                this.fa_icon_input = response.data.data.icon;
-             
-                if(response.data.data.content_type_id == 0) {
-                    this.content_type_input = '';
-                } else {
-                    this.content_type_input = response.data.data.content_type_id;
-                }
-
-                this.video_description_input = response.data.data.video_description;
-                this.video_type_input = response.data.data.video_type_id;
-                this.video_id_input = response.data.data.video_id;
-                this.src_description_input = response.data.data.src_description;
-                this.audio_src_input = response.data.data.audio_src;
-                this.text_description = response.data.data.text_description;
-                this.pdf_description_input = response.data.data.pdf_description;
-                this.iframe_description_input = response.data.data.iframe_description;
-                this.iframe_url_input = response.data.data.iframe_url;
-                this.phone_input = response.data.data.phone;
-                this.url_external_page_input = response.data.data.url_external_page;
-                this.app_type_input = response.data.data.app_type_id;
-                this.url_app_input = response.data.data.url_app;
-                this.uri_app_input = response.data.data.uri_app;
-                this.url_desktop_app_input = response.data.data.url_desktop_app;
-                this.url_not_installed_app_input = response.data.data.url_not_installed_app;
-                this.whatsapp_type_input = response.data.data.whatsapp_type_id;
-                this.whatsapp_url_input = response.data.data.whatsapp_url;
-            } catch (error) {
-                if (error.message == "Request failed with status code 401") {
-                    localStorage.removeItem("accessToken");
-                } else {
-                    console.error(
-                        "Error al obtener los datos de la categoría:",
-                        error
-                    );
-                }
-            }
-
-            try {
-                const response = await axios.get(
-                    "https://paneldecontrolem.cl/api/category_region/" + this.$route.params.id,
-                    {
-                        headers: {
-                            accept: "application/json",
-                            Authorization: `Bearer ${token}`,
-                        },
+                    if(response.data.data.content_type_id == 0) {
+                        this.content_type_input = '';
+                    } else {
+                        this.content_type_input = response.data.data.content_type_id;
                     }
-                );
 
-                this.region_posts = response.data.data;
-                this.region_input = this.region_posts.map(post => post.region_id);
-
-                this.getSelectedRegionsCommunes();
-            } catch (error) {
-                if (error.message == "Request failed with status code 401") {
-                    localStorage.removeItem("accessToken");
-                } else {
-                    console.error(
-                        "Error al obtener los datos de las regiones:",
-                        error
-                    );
+                    this.video_description_input = response.data.data.video_description;
+                    this.video_type_input = response.data.data.video_type_id;
+                    this.video_id_input = response.data.data.video_id;
+                    this.src_description_input = response.data.data.src_description;
+                    this.audio_src_input = response.data.data.audio_src;
+                    this.text_description = response.data.data.text_description;
+                    this.pdf_description_input = response.data.data.pdf_description;
+                    this.iframe_description_input = response.data.data.iframe_description;
+                    this.iframe_url_input = response.data.data.iframe_url;
+                    this.phone_input = response.data.data.phone;
+                    this.url_external_page_input = response.data.data.url_external_page;
+                    this.app_type_input = response.data.data.app_type_id;
+                    this.url_app_input = response.data.data.url_app;
+                    this.uri_app_input = response.data.data.uri_app;
+                    this.url_desktop_app_input = response.data.data.url_desktop_app;
+                    this.url_not_installed_app_input = response.data.data.url_not_installed_app;
+                    this.whatsapp_type_input = response.data.data.whatsapp_type_id;
+                    this.whatsapp_url_input = response.data.data.whatsapp_url;
+                } catch (error) {
+                    if (error.message == "Request failed with status code 401") {
+                        localStorage.removeItem("accessToken");
+                    } else {
+                        console.error(
+                            "Error al obtener los datos de la categoría:",
+                            error
+                        );
+                    }
                 }
+
+                try {
+                    const response = await axios.get(
+                        "https://paneldecontrolem.cl/api/category_region/" + this.$route.params.id,
+                        {
+                            headers: {
+                                accept: "application/json",
+                                Authorization: `Bearer ${token}`,
+                            },
+                        }
+                    );
+
+                    this.region_posts = response.data.data;
+                    this.region_input = this.region_posts.map(post => post.region_id);
+
+                    this.getSelectedRegionsCommunes();
+                } catch (error) {
+                    if (error.message == "Request failed with status code 401") {
+                        localStorage.removeItem("accessToken");
+                    } else {
+                        console.error(
+                            "Error al obtener los datos de las regiones:",
+                            error
+                        );
+                    }
+                }
+            } else {
+                this.$router.push("/login");
+                this.isLoading = false;
+                this.loading = false;
             }
         },
     },
