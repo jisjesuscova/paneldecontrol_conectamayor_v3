@@ -33,6 +33,8 @@ class FrontContentController extends Controller
      */
     public function show(Request $request)
     {
+        $id = $request->id;
+        
         $content = Content::find($id);
 
         return response()->json([
