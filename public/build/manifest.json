@@ -32,7 +32,7 @@
     "src": "resources/js/app.js"
   },
   "resources/js/main.css": {
-    "file": "assets/main-3ef41abe.css",
+    "file": "assets/main-7b2b7be2.css",
     "src": "resources/js/main.css"
   },
   "resources/js/main.js": {
@@ -43,9 +43,9 @@
       "assets/materialdesignicons-webfont-be825c12.ttf"
     ],
     "css": [
-      "assets/main-3ef41abe.css"
+      "assets/main-7b2b7be2.css"
     ],
-    "file": "assets/main-063d9b73.js",
+    "file": "assets/main-f8f824bd.js",
     "imports": [
       "_axios-21b846bc.js"
     ],

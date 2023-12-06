@@ -400,7 +400,7 @@
                                                     >Teléfono</label
                                                 >
                                                 <input
-                                                    type="number"
+                                                    type="text"
                                                     class="form-control"
                                                     v-model="phone_input"
                                                     placeholder="Teléfono"
@@ -414,7 +414,7 @@
                                                     >Url a página externa</label
                                                 >
                                                 <input
-                                                    type="number"
+                                                    type="text"
                                                     class="form-control"
                                                     v-model="url_external_page_input"
                                                     placeholder="Url a página externa"
