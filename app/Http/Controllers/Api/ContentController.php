@@ -87,8 +87,8 @@ class ContentController extends Controller
      */
     public function search(Request $request)
     {
-        $section_id = $request->segment(4);
-        $category_id = $request->segment(5);
+        echo $section_id = $request->segment(4);
+        echo $category_id = $request->segment(5);
         
         $contents = Content::select('id', 'section_id', 'category_id', 'status_id', 'title', 'subtitle', 'google_tag', 'position', 'color', 'start_date', 'end_date', 'georeferencing_type_id', 'icon_status_id', 'icon_type_id', 'icon', 'content_type_id', 'video_description', 'video_type_id', 'video_id', 'src_description', 'audio_src', 'text_description', 'pdf_description', 'pdf', 'iframe_description', 'iframe_url', 'phone', 'url_external_page', 'app_type_id', 'url_app', 'uri_app', 'url_desktop_app', 'url_not_installed_app', 'whatsapp_type_id', 'whatsapp_url')
              ->where('section_id', $section_id)
@@ -198,16 +198,16 @@ class ContentController extends Controller
                 }
                 
                 if($content_to_copy->icon_type_id == 2) { 
-                    $original_image = 'public/files/' . $content_to_copy->icon;
+                    $original_image = 'public/' . $content_to_copy->icon;
                     $new_name_image = $icon;
-                    $copy_path = 'public/files/' . $new_name_image;
+                    $copy_path = 'public/' . $new_name_image;
                     File::copy(storage_path('app/' . $original_image), storage_path('app/' . $copy_path));
                 }
 
                 if($content_to_copy->content_type_id == 4) { 
-                    $original_image = 'public/files/' . $content_to_copy->pdf;
+                    $original_image = 'public/' . $content_to_copy->pdf;
                     $new_name_image = $pdf;
-                    $copy_path = 'public/files/' . $new_name_image;
+                    $copy_path = 'public/' . $new_name_image;
                     File::copy(storage_path('app/' . $original_image), storage_path('app/' . $copy_path));
                 }
 
@@ -347,7 +347,7 @@ class ContentController extends Controller
                 
                 if($request->hasFile('icon_image')) { 
                     Storage::disk('local')->putFileAs(
-                        'public/files',
+                        'public',
                         $request->icon_image,
                         $icon
                     );
@@ -355,7 +355,7 @@ class ContentController extends Controller
 
                 if($request->hasFile('pdf')) { 
                     Storage::disk('local')->putFileAs(
-                        'public/files',
+                        'public',
                         $request->pdf,
                         $pdf
                     );
@@ -708,7 +708,7 @@ class ContentController extends Controller
 
             if($request->hasFile('icon_image')) { 
                 Storage::disk('local')->putFileAs(
-                    'public/files',
+                    'public',
                     $request->icon_image,
                     $icon
                 );
@@ -716,7 +716,7 @@ class ContentController extends Controller
 
             if($request->hasFile('pdf')) { 
                 Storage::disk('local')->putFileAs(
-                    'public/files',
+                    'public',
                     $request->pdf,
                     $pdf
                 );
@@ -756,11 +756,11 @@ class ContentController extends Controller
         if($content->delete()) {
             if ($icon != '') {
                 echo $icon;
-                Storage::disk('local')->delete('public/files/'.$icon);
+                Storage::disk('local')->delete('public/'.$icon);
             }
 
             if ($pdf != '') {
-                Storage::disk('local')->delete('public/files/'.$pdf);
+                Storage::disk('local')->delete('public/'.$pdf);
             }
         }
 
