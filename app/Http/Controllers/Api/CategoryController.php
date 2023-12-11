@@ -757,11 +757,11 @@ class CategoryController extends Controller
         
         if($category->delete()) {
             if ($icon != '') {
-                Storage::disk('local')->delete('public/files/'.$icon);
+                Storage::disk('local')->delete('public/'.$icon);
             }
 
             if ($pdf != '') {
-                Storage::disk('local')->delete('public/files/'.$pdf);
+                Storage::disk('local')->delete('public/'.$pdf);
             }
         }
 
