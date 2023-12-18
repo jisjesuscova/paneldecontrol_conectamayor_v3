@@ -71,7 +71,7 @@
                                             </div>
                                         </div>
                                         <div class="row mt-4">
-                                            <div class="col-md-3">
+                                            <div class="col-md-6">
                                                 <label for="rut"
                                                     >Título
                                                     <span class="text-danger"
@@ -85,22 +85,6 @@
                                                     v-model="title_input"
                                                     placeholder="Título"
                                                     aria-label="Título"
-                                                />
-                                            </div>
-                                            <div class="col-md-3">
-                                                <label for="alliance_name"
-                                                    >Sub-título
-                                                    <span class="text-danger"
-                                                        >*</span
-                                                    ></label
-                                                >
-                                                <input
-                                                    required
-                                                    type="text"
-                                                    class="form-control"
-                                                    v-model="subtitle_input"
-                                                    placeholder="Nombre del Sub-título"
-                                                    aria-label="Nombre del Sub-título"
                                                 />
                                             </div>
                                             <div class="col-md-3">
@@ -267,7 +251,6 @@
                                                         Normal
                                                     </option>
                                                     <option value="1">Video</option>
-                                                    <option value="2">Audio</option>
                                                     <option value="3">Texto</option>
                                                     <option value="4">Pdf</option>
                                                     <option value="5">Iframe</option>
