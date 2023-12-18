@@ -126,12 +126,12 @@
                                         "
                                     >
                                         <o-table-column
-                                            field="id"
-                                            label="Id"
+                                            field="position"
+                                            label="Orden"
                                             numeric
                                             v-slot="p"
                                         >
-                                            {{ p.row.id }}
+                                            {{ p.row.position }}
                                         </o-table-column>
                                         <o-table-column
                                             field="title"
