@@ -5,15 +5,8 @@
                 <div class="row mb-2">
                     <div class="col-sm-6 margin-left">
                         <h1>
-                            Alianzas
+                            Auditoría
                         </h1>
-                    </div>
-                    <div class="col-sm-6">
-                        <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item active">
-                                <router-link to="/add_cashier" class="btn btn-block btn-success">Agregar</router-link>
-                            </li>
-                        </ol>
                     </div>
                 </div>
             </div><!-- /.container-fluid -->
@@ -27,19 +20,11 @@
                             <!-- /.card-header -->
                             <div class="card-body">
                                 <o-table :loading="isLoading" :data="posts.current_page && posts.data.length == 0 ? [] : posts.data">
-                                    <o-table-column field="id" label="Id" numeric v-slot="p">
-                                        {{ p.row.id }}
+                                    <o-table-column field="task" label="Acción" v-slot="p">
+                                        {{ p.row.task }}
                                     </o-table-column>
-                                    <o-table-column field="cashier" label="Caja" v-slot="p">
-                                        {{ p.row.cashier }}
-                                    </o-table-column>
-                                    <o-table-column field="" label="" v-slot="p">
-                                        <router-link :to="`/cashier/edit/${p.row.id}`" class="btn btn-success mr-2">
-                                            <i class="fa-solid fa-pencil"></i>
-                                        </router-link>
-                                        <o-button variant="danger" @click="deleteCashier(p.row.id)">
-                                            <i class="fa-solid fa-trash"></i>
-                                        </o-button>
+                                    <o-table-column field="task_id" label="Id" v-slot="p">
+                                        {{ p.row.task_id }}
                                     </o-table-column>
                                 </o-table>
                                 <hr />
@@ -81,18 +66,11 @@ export default {
         },
         listPage() {
             this.isLoading = true;
-            this.$axios.get('api/cashier?page='+this.currentPage).then((res) => {
+            this.$axios.get('api/audit?page='+this.currentPage).then((res) => {
                 this.posts = res.data.data;
                 this.isLoading = false;
             })
         },
-        deleteCashier(id) {
-            if (confirm("¿Estás seguro de que deseas eliminar el registro?")) {
-                this.$axios.delete('api/cashier/'+id).then((res) => {
-                    this.listPage();
-                })
-            }
-        }
     },
     async mounted() {
         this.listPage();
