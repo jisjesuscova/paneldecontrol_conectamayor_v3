@@ -18,14 +18,13 @@ class RolController extends Controller
      */
     public function index()
     {
-
         $rols = Rol::select('id', 'rol')
              ->orderByDesc('id')
              ->paginate(10);
 
         return response()->json([
             'success' => true,
-            'data' => 111
+            'data' => $rols
         ], 200);
     }
 
