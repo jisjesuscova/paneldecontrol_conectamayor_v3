@@ -71,8 +71,8 @@
                                             {{ p.row.id }}
                                         </o-table-column>
                                         <o-table-column
-                                            field="name"
-                                            label="Nombre"
+                                            field="rol"
+                                            label="Rol"
                                             v-slot="p"
                                         >
                                             {{ p.row.rol }}
