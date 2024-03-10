@@ -15,6 +15,21 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
+    public function index()
+    {
+        $users = User::select('id', 'name')
+             ->orderByDesc('id')
+             ->paginate(10);
+
+        return response()->json([
+            'success' => true,
+            'data' => $users
+        ], 200);
+    }
+
+    /**
+     * Display a listing of the resource.
+     */
     public function login(Request $request)
     {
         $credentials = [
@@ -52,7 +67,17 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $user = new User();
+        $user->rol_id = $request->rol_id;
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->password = Hash::make($request->password);
+        $user->save();
+
+        return response()->json([
+            'success' => true,
+            'data' => $user
+        ], 200);
     }
 
     /**
@@ -69,18 +94,24 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(User $user)
+    public function edit(Request $request)
     {
-        //
+        $user = User::find($request->id);
+
+        return response()->json([
+            'success' => true,
+            'data' => $user
+        ], 200);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateProfileRequest $request, User $user)
+    public function update(Request $request, $id)
     {
-        $user->email = $request->email;
-        $user->password = Hash::make($request->password);
+        $user = User::find($id);
+        $user->rol_id = $request->rol_id;
+        $user->name = $request->name;
         $user->update();
 
         return response()->json([
@@ -92,8 +123,15 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(User $user)
+    public function destroy(Request $request)
     {
-        //
+        $user = User::find($request->id);
+
+        $user->delete();
+
+        return response()->json([
+            'success' => true,
+            'data' => $user
+        ], 200);
     }
 }

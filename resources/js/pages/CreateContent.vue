@@ -819,7 +819,7 @@ export default {
 
                 try {
                     const response = await axios.post(
-                        "https://paneldecontrolem.cl/api/content/store",
+                        "http://pcem.test/api/content/store",
                         formData,
                         {
                             headers: {

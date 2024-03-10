@@ -80,8 +80,22 @@ Route::get('content_commune/{id}', [\App\Http\Controllers\Api\CategoryCommuneCon
 
 Route::post('audit/store', [\App\Http\Controllers\Api\AuditController::class, 'store']);
 
+Route::get('user', [\App\Http\Controllers\Api\UserController::class, 'index']);
+Route::delete('user/{id}', [\App\Http\Controllers\Api\UserController::class, 'destroy']);
+
+Route::get('rol', [\App\Http\Controllers\Api\RolController::class, 'index']);
+Route::post('get_all', [\App\Http\Controllers\Api\RolController::class, 'get_all']);
+Route::delete('rol/{id}', [\App\Http\Controllers\Api\RolController::class, 'destroy']);
+Route::post('rol/store', [\App\Http\Controllers\Api\RolController::class, 'store']);
+Route::post('rol/{id}', [\App\Http\Controllers\Api\RolController::class, 'update']);
+Route::get('rol/{id}', [\App\Http\Controllers\Api\RolController::class, 'edit']);
+
 Route::post('user/login', [\App\Http\Controllers\Api\UserController::class, 'login']);
 Route::post('user/logout', [\App\Http\Controllers\Api\UserController::class, 'logout']);
+Route::post('user/store', [\App\Http\Controllers\Api\UserController::class, 'store']);
+Route::get('user/{id}', [\App\Http\Controllers\Api\UserController::class, 'edit']);
+Route::post('user/{id}', [\App\Http\Controllers\Api\UserController::class, 'update']);
+
 Route::get('front_section/{region_id}/{commune_id}', [\App\Http\Controllers\Api\FrontSectionController::class, 'index']);
 Route::get('front_section/show/{id}', [\App\Http\Controllers\Api\FrontSectionController::class, 'show']);
 Route::get('front_category/{id}/{region_id}/{commune_id}', [\App\Http\Controllers\Api\FrontCategoryController::class, 'index']);

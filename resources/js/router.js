@@ -14,6 +14,12 @@ import CreateCategory from './pages/CreateCategory.vue'
 import EditCategory from './pages/EditCategory.vue'
 import CreateContent from './pages/CreateContent.vue'
 import EditContent from './pages/EditContent.vue'
+import User from './pages/User.vue'
+import CreateUser from './pages/CreateUser.vue'
+import Rol from './pages/Rol.vue'
+import CreateRol from './pages/CreateRol.vue'
+import EditRol from './pages/EditRol.vue'
+import EditUser from './pages/EditUser.vue'
 
 const routes = [
     {
@@ -90,6 +96,36 @@ const routes = [
         name:'content/edit/:id',
         path:'/content/edit/:id',
         component: EditContent
+    },
+    {
+        name:'users',
+        path:'/users',
+        component: User
+    },
+    {
+        name:'user/create',
+        path:'/user/create',
+        component: CreateUser
+    },
+    {
+        name:'rols',
+        path:'/rols',
+        component: Rol
+    },
+    {
+        name:'rol/create',
+        path:'/rol/create',
+        component: CreateRol
+    },
+    {
+        name:'rol/edit/:id',
+        path:'/rol/edit/:id',
+        component: EditRol
+    },
+    {
+        name:'user/edit/:id',
+        path:'/user/edit/:id',
+        component: EditUser
     },
 ]
 

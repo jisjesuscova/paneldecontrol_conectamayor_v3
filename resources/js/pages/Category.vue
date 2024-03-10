@@ -6,7 +6,7 @@
                     <div class="col-sm-6 margin-left">
                         <h1>Categorias</h1>
                     </div>
-                    <div class="col-sm-6">
+                    <div class="col-sm-6" v-if="add_category == 1">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item active">
                                 <router-link
@@ -133,12 +133,14 @@
                                             <a
                                                 @click="copyPost(p.row.id)"
                                                 class="btn btn-info mr-2"
+                                                v-if="copy_category == 1"
                                             >
                                                 <i class="fa-solid fa-plus"></i>
                                             </a>
                                             <router-link
                                                 :to="`/category/edit/${p.row.id}`"
                                                 class="btn btn-success mr-2"
+                                                v-if="edit_category == 1"
                                             >
                                                 <i
                                                     class="fa-solid fa-pencil"
@@ -148,6 +150,7 @@
                                                 variant="danger"
                                                 class="btn btn-danger mr-2"
                                                 @click="deleteCategory(p.row.id)"
+                                                v-if="delete_category == 1"
                                             >
                                                 <i
                                                     class="fa-solid fa-trash"
@@ -157,7 +160,7 @@
                                             <a
                                                 variant="warning"
                                                 @click="moveDown(p.row.id)"
-                                                v-if="p.row.position != posts.total"
+                                                v-if="p.row.position != posts.total && order_category == 1"
                                                 class="btn btn-warning mr-2"
                                             >
                                                 <i class="fa-solid fa-arrow-down"></i>
@@ -166,7 +169,7 @@
                                             <a
                                                 variant="warning"
                                                 @click="moveUp(p.row.id)"
-                                                v-if="p.row.position != 1"
+                                                v-if="p.row.position != 1 && order_category == 1"
                                                 class="btn btn-warning mr-2"
                                             >
                                                 <i class="fa-solid fa-arrow-up"></i>
@@ -251,6 +254,11 @@ export default {
             updated_alliance: 0,
             section_input: "",
             section_posts: [],
+            add_category: '',
+            edit_category: '',
+            delete_category: '',
+            copy_category: '',
+            order_category: '',
         };
     },
     methods: {
@@ -470,6 +478,12 @@ export default {
         },
     },
     async mounted() {
+        this.add_category = localStorage.getItem('add_category');
+        this.edit_category = localStorage.getItem('edit_category');
+        this.delete_category = localStorage.getItem('delete_category');
+        this.copy_category = localStorage.getItem('copy_category');
+        this.order_category = localStorage.getItem('order_category');
+
         this.created_category = localStorage.getItem("created_category");
 
         if (this.created_category == 1) {

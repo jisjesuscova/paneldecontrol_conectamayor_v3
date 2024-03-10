@@ -119,19 +119,62 @@ export default {
             this.loading = true;
 
             axios
-                .post("https://paneldecontrolem.cl/api/user/login", formData)
+                .post("http://pcem.test/api/user/login", formData)
                 .then((response) => {
                     console.log(response.data.data.user.name);
 
                     this.id = response.data.data.user.id;
+                    this.rol_id = response.data.data.user.rol_id;
                     this.token = response.data.data.token;
                     this.names = response.data.data.user.name;
                     this.email = response.data.data.user.email;
 
                     localStorage.setItem('id', this.id)
+                    localStorage.setItem('rol_id', this.rol_id)
                     localStorage.setItem('token', this.token)
                     localStorage.setItem('names', this.names)
                     localStorage.setItem('email', this.email)
+                })
+                .catch((error) => {
+                    if (
+                        error ==
+                        "AxiosError: Request failed with status code 401"
+                    ) {
+                        this.incorrect_login_data = true;
+                        this.loading = false;
+                    }
+                });
+
+            this.get_permissions();
+        },
+        get_permissions() {
+            let rol_id = localStorage.getItem('rol_id')
+
+            axios
+                .get("http://pcem.test/api/rol/" + rol_id)
+                .then((response) => {
+                    localStorage.setItem('add_section', response.data.rol_permissions.add_section)
+                    localStorage.setItem('edit_section', response.data.rol_permissions.edit_section)
+                    localStorage.setItem('delete_section', response.data.rol_permissions.delete_section)
+                    localStorage.setItem('copy_section', response.data.rol_permissions.copy_section)
+                    localStorage.setItem('order_section', response.data.rol_permissions.order_section)
+                    localStorage.setItem('add_category', response.data.rol_permissions.add_category)
+                    localStorage.setItem('edit_category', response.data.rol_permissions.edit_category)
+                    localStorage.setItem('delete_category', response.data.rol_permissions.delete_category)
+                    localStorage.setItem('copy_category', response.data.rol_permissions.copy_category)
+                    localStorage.setItem('order_category', response.data.rol_permissions.order_category)
+                    localStorage.setItem('add_content', response.data.rol_permissions.add_content)
+                    localStorage.setItem('edit_content', response.data.rol_permissions.edit_content)
+                    localStorage.setItem('delete_content', response.data.rol_permissions.delete_content)
+                    localStorage.setItem('copy_content', response.data.rol_permissions.copy_content)
+                    localStorage.setItem('order_content', response.data.rol_permissions.order_content)
+                    localStorage.setItem('watch_audit', response.data.rol_permissions.watch_audit)
+                    localStorage.setItem('add_user', response.data.rol_permissions.add_user)
+                    localStorage.setItem('edit_user', response.data.rol_permissions.edit_user)
+                    localStorage.setItem('delete_user', response.data.rol_permissions.delete_user)
+                    localStorage.setItem('add_rol', response.data.rol_permissions.add_rol)
+                    localStorage.setItem('edit_rol', response.data.rol_permissions.edit_rol)
+                    localStorage.setItem('delete_rol', response.data.rol_permissions.delete_rol)
                 })
                 .catch((error) => {
                     if (

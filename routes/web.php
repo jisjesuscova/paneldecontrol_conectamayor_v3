@@ -79,4 +79,32 @@ Route::get('/content/create', function () {
     return view('home');
 });
 
+Route::get('/users', function () {
+    return view('home');
+});
+
+Route::get('/rols', function () {
+    return view('home');
+});
+
+Route::get('/rol/create', function () {
+    return view('home');
+});
+
+Route::get('/rol/edit/{id}', function () {
+    return view('home');
+});
+
+Route::get('/user/create', function () {
+    return view('home');
+});
+
+Route::get('/user/edit/{id}', function () {
+    return view('home');
+});
+
+Route::get('/settings', function () {
+    return view('home');
+});
+
 require __DIR__.'/auth.php';

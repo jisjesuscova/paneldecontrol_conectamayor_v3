@@ -4,13 +4,13 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6 margin-left">
-                        <h1>Secciones</h1>
+                        <h1>Roles</h1>
                     </div>
-                    <div class="col-sm-6" v-if="add_section == 1">
+                    <div class="col-sm-6" v-if="add_rol == 1">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item active">
                                 <router-link
-                                    to="/section/create"
+                                    to="/rol/create"
                                     class="btn btn-block btn-success"
                                     >Agregar</router-link
                                 >
@@ -47,10 +47,10 @@
                                 </div>
                                 <!-- /.card-header -->
                                 <div class="card-body">
-                                    <div class="alert alert-success" role="alert" v-if="created_section == 1">
+                                    <div class="alert alert-success" role="alert" v-if="created_alliance == 1">
                                         Registro agregado con <strong>éxito</strong>
                                     </div>
-                                    <div class="alert alert-success" role="alert" v-if="updated_section == 1">
+                                    <div class="alert alert-success" role="alert" v-if="updated_alliance == 1">
                                         Registro actualizado con <strong>éxito</strong>
                                     </div>
                                     <o-table
@@ -63,64 +63,39 @@
                                         "
                                     >
                                         <o-table-column
-                                            field="position"
-                                            label="Orden"
+                                            field="id"
+                                            label="Id"
                                             numeric
                                             v-slot="p"
                                         >
-                                            {{ p.row.position }}
+                                            {{ p.row.id }}
                                         </o-table-column>
                                         <o-table-column
-                                            field="title"
-                                            label="Titulo"
+                                            field="name"
+                                            label="Nombre"
                                             v-slot="p"
                                         >
-                                            {{ p.row.title }}
+                                            {{ p.row.rol }}
                                         </o-table-column>
                                         <o-table-column
                                             field=""
                                             label=""
                                             v-slot="p"
                                         >
-                                            <a
-                                                @click="copyPost(p.row.id)"
-                                                class="btn btn-info mr-2"
-                                                v-if="copy_section == 1"
-                                            >
-                                                <i class="fa-solid fa-plus"></i>
-                                            </a>
-                                         
                                             <router-link
-                                                :to="`/section/edit/${p.row.id}`"
+                                                :to="`/rol/edit/${p.row.id}`"
                                                 class="btn btn-success mr-2"
-                                                v-if="edit_section == 1"
+                                                v-if="edit_rol == 1"
                                             >
                                                 <i class="fa-solid fa-pencil"></i>
                                             </router-link>
-                                            <a
-                                                @click="deleteSection(p.row.id)"
-                                                class="btn btn-danger mr-2"
-                                                v-if="delete_section == 1"
+                                            <o-button
+                                                variant="danger"
+                                                @click="deleteRol(p.row.id)"
+                                                v-if="delete_rol == 1"
                                             >
                                                 <i class="fa-solid fa-trash"></i>
-                                            </a>
-                                           
-                                            <a
-                                                @click="moveDown(p.row.id)"
-                                                v-if="p.row.position != posts.total && order_section == 1"
-                                                class="btn btn-warning mr-2"
-                                            >
-                                                <i class="fa-solid fa-arrow-down"></i>
-                                            </a>
-                                    
-                                            <a
-                                                @click="moveUp(p.row.id)"
-                                                v-if="p.row.position != 1 && order_section == 1"
-                                                class="btn btn-warning"
-                                            >
-                                                <i class="fa-solid fa-arrow-up"></i>
-                                            </a>
-                                            
+                                            </o-button>
                                         </o-table-column>
                                     </o-table>
                                     <hr />
@@ -197,13 +172,10 @@ export default {
             isLoading: true,
             currentPage: 1,
             loading: true,
-            created_alliance: 0,
-            updated_alliance: 0,
-            add_section: '',
-            edit_section: '',
-            delete_section: '',
-            copy_section: '',
-            order_section: ''
+            created_user: 0,
+            add_rol: '',
+            edit_rol: '',
+            delete_rol: ''
         };
     },
     methods: {
@@ -215,148 +187,61 @@ export default {
             this.isLoading = true;
             const token = localStorage.getItem("token");
 
-            try {
-                const response = await axios.get(
-                    "https://paneldecontrolem.cl/api/section?page="+this.currentPage,
-                    {
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                            accept: "application/json",
-                        },
-                    }
-                );
+            if (token) {
+                try {
+                    const response = await axios.get(
+                        "http://pcem.test/api/rol/",
+                        {
+                            headers: {
+                                Authorization: `Bearer ${token}`,
+                                accept: "application/json",
+                            },
+                        }
+                    );
 
-                this.posts = response.data.data;
-                this.loading = false;
+                    this.posts = response.data.data;
+                    this.loading = false;
+                    this.isLoading = false;
+                } catch (error) {
+                    console.error("Error al obtener la lista de roles:", error);
+                }
+            } else {
+                this.$router.push("/");
                 this.isLoading = false;
-            } catch (error) {
-                console.error("Error al obtener la lista de secciones:", error);
+                this.loading = false;
             }
         },
-        async copyPost(id) {
-            if (confirm("¿Estás seguro de que deseas copiar la sección?")) {
-                const token = localStorage.getItem("token");
-                
-                try {
-                    const response = await axios.get(
-                        "https://paneldecontrolem.cl/api/section/copy/" + id,
-                        {
-                            headers: {
-                                Authorization: `Bearer ${token}`,
-                                accept: "application/json",
-                            },
-                        }
-                    );
-                } catch (error) {
-                    console.error("Error al copiar la sección:", error);
-                }
-            }
-        },
-        async moveDown(id) {
+        deleteRol(id) {
             const token = localStorage.getItem("token");
-            
-            try {
-                const response = await axios.get(
-                    "https://paneldecontrolem.cl/api/section/move_down/" + id,
-                    {
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                            accept: "application/json",
-                        },
-                    }
-                );
 
-                
-                try {
-                    const response = await axios.get(
-                        "https://paneldecontrolem.cl/api/section/",
-                        {
-                            headers: {
-                                Authorization: `Bearer ${token}`,
-                                accept: "application/json",
-                            },
-                        }
-                    );
+            if (token) {
+                if (confirm("¿Estás seguro de que deseas eliminar el registro?")) {
+                    
+                    const headers = {
+                        Authorization: `Bearer ${token}`,
+                        accept: "application/json",
+                    };
 
-                    this.posts = response.data.data;
-
-                } catch (error) {
-                    console.error("Error al obtener la lista de secciones:", error);
+                    this.$axios.delete("api/rol/" + id, { headers }).then((res) => {
+                        this.getData();
+                    });
                 }
-            } catch (error) {
-                console.error("Error al mover la sección:", error);
-            }
-        },
-        async moveUp(id) {
-            const token = localStorage.getItem("token");
-            
-            try {
-                const response = await axios.get(
-                    "https://paneldecontrolem.cl/api/section/move_up/" + id,
-                    {
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                            accept: "application/json",
-                        },
-                    }
-                );
-
-                
-                try {
-                    const response = await axios.get(
-                        "https://paneldecontrolem.cl/api/section/",
-                        {
-                            headers: {
-                                Authorization: `Bearer ${token}`,
-                                accept: "application/json",
-                            },
-                        }
-                    );
-
-                    this.posts = response.data.data;
-
-                } catch (error) {
-                    console.error("Error al obtener la lista de secciones:", error);
-                }
-            } catch (error) {
-                console.error("Error al mover la sección:", error);
-            }
-        },
-        deleteSection(id) {
-            if (confirm("¿Estás seguro de que deseas eliminar el registro?")) {
-                const token = localStorage.getItem("token");
-                const headers = {
-                    Authorization: `Bearer ${token}`,
-                    accept: "application/json",
-                };
-
-                this.$axios.delete("api/section/" + id, { headers }).then((res) => {
-                    this.getData();
-                });
+            } else {
+                this.$router.push("/");
             }
         },
     },
     async mounted() {
-        this.add_section = localStorage.getItem('add_section');
-        this.edit_section = localStorage.getItem('edit_section');
-        this.delete_section = localStorage.getItem('delete_section');
-        this.copy_section = localStorage.getItem('copy_section');
-        this.order_section = localStorage.getItem('order_section');
+        this.add_rol = localStorage.getItem('add_rol');
+        this.edit_rol = localStorage.getItem('edit_rol');
+        this.delete_rol = localStorage.getItem('delete_rol');
 
-        this.created_section = localStorage.getItem(
-            'created_section',
+        this.created_rol = localStorage.getItem(
+            'created_rol',
         )
 
-        if (this.created_section == 1) {
-            localStorage.removeItem('created_section')
-        }
-
-        this.updated_section = localStorage.getItem(
-            'updated_section',
-        )
-
-        if (this.updated_section == 1) {
-            localStorage.removeItem('updated_section')
+        if (this.created_rol == 1) {
+            localStorage.removeItem('created_rol')
         }
 
         this.getData();

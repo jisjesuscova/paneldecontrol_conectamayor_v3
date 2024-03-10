@@ -135,6 +135,12 @@ class SectionController extends Controller
                 $pdf = $section_to_copy->pdf;
             }
 
+            if($section_to_copy->content_type_id == 9) { 
+                $image = time().'_'.$section_to_copy->image;
+            } else {
+                $image = $section_to_copy->image;
+            }
+
             $section = Section::create([
                 'status_id' => $section_to_copy->status_id,
                 'title' => $section_to_copy->title,
@@ -167,6 +173,7 @@ class SectionController extends Controller
                 'url_not_installed_app' => $section_to_copy->url_not_installed_app,
                 'whatsapp_type_id' => $section_to_copy->whatsapp_type_id,
                 'whatsapp_url' => $section_to_copy->whatsapp_url,
+                'image' => $image,
             ]);
 
             if ($section) {
@@ -207,6 +214,13 @@ class SectionController extends Controller
                 if($section_to_copy->content_type_id == 4) { 
                     $original_image = 'public/' . $section_to_copy->pdf;
                     $new_name_image = $pdf;
+                    $copy_path = 'public/' . $new_name_image;
+                    File::copy(storage_path('app/' . $original_image), storage_path('app/' . $copy_path));
+                }
+
+                if($section_to_copy->content_type_id == 9) { 
+                    $original_image = 'public/' . $section_to_copy->image;
+                    $new_name_image = $image;
                     $copy_path = 'public/' . $new_name_image;
                     File::copy(storage_path('app/' . $original_image), storage_path('app/' . $copy_path));
                 }
@@ -259,6 +273,12 @@ class SectionController extends Controller
                 $pdf_description = '';
             }
 
+            if($request->hasFile('image')) { 
+                $image = time().'_'.'image.'.$request->image->getClientOriginalExtension();
+            } else {
+                $image = '';
+            }
+
             if ($request->content_type_id == '') {
                 $content_type_id = 0;
             } else {
@@ -297,6 +317,7 @@ class SectionController extends Controller
                 'url_not_installed_app' => $request->url_not_installed_app,
                 'whatsapp_type_id' => $request->whatsapp_type_id,
                 'whatsapp_url' => $request->whatsapp_url,
+                'image' => $image,
             ]);
 
             if ($section) {
@@ -358,6 +379,14 @@ class SectionController extends Controller
                     );
                 }
 
+                if($request->hasFile('image')) { 
+                    Storage::disk('local')->putFileAs(
+                        'public',
+                        $request->image,
+                        $image
+                    );
+                }
+
                 return response()->json([
                     'success' => true,
                     'data' => $section
@@ -416,6 +445,12 @@ class SectionController extends Controller
             $pdf = '';
 
             $pdf_description = '';
+        }
+
+        if($request->hasFile('image')) { 
+            $image = time().'_'.'image.'.$request->image->getClientOriginalExtension();
+        } else {
+            $image = '';
         }
 
         if ($request->content_type_id == '') {
@@ -614,6 +649,13 @@ class SectionController extends Controller
             $section->whatsapp_url = $request->whatsapp_url;
         }
 
+        if ($image != 'null' 
+        && $image != null 
+        && $image != '') {
+            $old_image = $section->image;
+            $section->image = $image;
+        }
+
         $section->save();
 
         if ($section) {
@@ -711,6 +753,18 @@ class SectionController extends Controller
                 );
             }
 
+            if($request->hasFile('image')) { 
+                if ($image != '') {
+                    Storage::disk('local')->delete('public/'.$old_image);
+                }
+
+                Storage::disk('local')->putFileAs(
+                    'public',
+                    $request->image,
+                    $image
+                );
+            }
+
             return response()->json([
                 'success' => true,
                 'data' => $section
@@ -741,6 +795,12 @@ class SectionController extends Controller
         } else {
             $pdf = '';
         }
+
+        if ($section->content_type_id == 9) {
+            $image = $section->image;
+        } else {
+            $image = '';
+        }
         
         if($section->delete()) {
             if ($icon != '') {
@@ -749,6 +809,10 @@ class SectionController extends Controller
 
             if ($pdf != '') {
                 Storage::disk('local')->delete('public/'.$pdf);
+            }
+
+            if ($image != '') {
+                Storage::disk('local')->delete('public/'.$image);
             }
         }
 
