@@ -119,7 +119,7 @@ export default {
             this.loading = true;
 
             axios
-                .post("http://pcem.test/api/user/login", formData)
+                .post("https://paneldecontrolem.cl/api/user/login", formData)
                 .then((response) => {
                     console.log(response.data.data.user.name);
 
@@ -151,7 +151,7 @@ export default {
             let rol_id = localStorage.getItem('rol_id')
 
             axios
-                .get("http://pcem.test/api/rol/" + rol_id)
+                .get("https://paneldecontrolem.cl/api/rol/" + rol_id)
                 .then((response) => {
                     localStorage.setItem('add_section', response.data.rol_permissions.add_section)
                     localStorage.setItem('edit_section', response.data.rol_permissions.edit_section)

@@ -158,7 +158,7 @@ export default {
             if (token) {
                 try {
                     const response = await axios.post(
-                        "http://pcem.test/api/get_all",
+                        "https://paneldecontrolem.cl/api/get_all",
                         {
                             headers: {
                                 Authorization: `Bearer ${token}`,
@@ -191,7 +191,7 @@ export default {
 
                 try {
                     const response = await axios.post(
-                        "http://pcem.test/api/user/store",
+                        "https://paneldecontrolem.cl/api/user/store",
                         formData,
                         {
                             headers: {

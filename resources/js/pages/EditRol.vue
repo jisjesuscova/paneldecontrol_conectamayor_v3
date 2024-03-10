@@ -562,7 +562,7 @@ export default {
 
                 try {
                     const response = await axios.post(
-                        "http://pcem.test/api/rol/" + this.$route.params.id,
+                        "https://paneldecontrolem.cl/api/rol/" + this.$route.params.id,
                         formData,
                         {
                             headers: {
@@ -592,7 +592,7 @@ export default {
 
             if(token) {
                 try {
-                    const response = await axios.get("http://pcem.test/api/rol/" + this.$route.params.id, {
+                    const response = await axios.get("https://paneldecontrolem.cl/api/rol/" + this.$route.params.id, {
                         headers: {
                             Authorization: `Bearer ${token}`,
                         },
