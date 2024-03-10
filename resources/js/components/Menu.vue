@@ -11,7 +11,7 @@
                     <li class="nav-item">
                         <router-link to="/" class="nav-link active" data-widget="pushmenu" @click="toggleSidebar">
                             <i class="nav-icon fas fa-home"></i>
-                            Inicio
+                            Inicio11
                         </router-link>
                     </li>
                     <li class="nav-item" v-if="add_section == 1 || edit_section == 1 || delete_section == 1 || copy_section == 1 || order_section == 1">

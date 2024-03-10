@@ -19,7 +19,7 @@ class RolController extends Controller
     public function index()
     {
         $rols = Rol::select('id', 'rol')
-             ->orderByDesc('i')
+             ->orderByDesc('id')
              ->paginate(10);
 
         return response()->json([
