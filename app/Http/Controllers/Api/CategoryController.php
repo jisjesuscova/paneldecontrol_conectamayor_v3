@@ -266,6 +266,8 @@ class CategoryController extends Controller
                     preg_match($pattern, $html, $matches);
 
                     $icon = $matches[1];
+                } else {
+                    $icon = '';
                 }
             }
 
