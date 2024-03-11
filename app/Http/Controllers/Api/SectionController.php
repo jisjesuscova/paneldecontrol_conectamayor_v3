@@ -284,7 +284,7 @@ class SectionController extends Controller
             } else {
                 $content_type_id = $request->content_type_id;
             }
-
+            die();
             $section = Section::create([
                 'status_id' => $request->status_id,
                 'title' => $request->title,

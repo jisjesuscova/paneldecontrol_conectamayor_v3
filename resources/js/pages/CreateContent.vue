@@ -675,6 +675,36 @@ export default {
         };
     },
     methods: {
+        async audit() {
+            const token = localStorage.getItem("token");
+
+            const id = localStorage.getItem("id");
+            
+            if (token) {
+                const formData = new FormData();
+
+                formData.append("user_id", id);
+                formData.append("task_id", '0');
+                formData.append("task", 'Página Principal');
+
+                try {
+                const response = await axios.post(
+                        "https://paneldecontrolem.cl/api/audit/store",
+                        formData,
+                        {
+                            headers: {
+                            Authorization: `Bearer ${token}`,
+                            "Content-Type": "multipart/form-data",
+                            },
+                        }
+                        );
+                } catch (error) {
+                console.error("Error al guardar la auditoría:", error);
+                }
+            } else {
+                this.$router.push("/login");
+            }
+        },
         updateColor (eventData) {
             this.color = eventData.colors.hex
         },
@@ -910,6 +940,8 @@ export default {
         },
     },
     async mounted() {
+        this.audit();
+        
         setTimeout(() => {
             this.loading = false;
         }, 5000);

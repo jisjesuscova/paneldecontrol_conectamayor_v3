@@ -673,6 +673,36 @@ export default {
         };
     },
     methods: {
+        async audit() {
+            const token = localStorage.getItem("token");
+
+            const id = localStorage.getItem("id");
+            
+            if (token) {
+                const formData = new FormData();
+
+                formData.append("user_id", id);
+                formData.append("task_id", this.$route.params.id);
+                formData.append("task", 'Editar Categoría');
+
+                try {
+                const response = await axios.post(
+                        "https://paneldecontrolem.cl/api/audit/store",
+                        formData,
+                        {
+                            headers: {
+                            Authorization: `Bearer ${token}`,
+                            "Content-Type": "multipart/form-data",
+                            },
+                        }
+                        );
+                } catch (error) {
+                console.error("Error al guardar la auditoría:", error);
+                }
+            } else {
+                this.$router.push("/login");
+            }
+        },
         updateColor (eventData) {
             this.color = eventData.colors.hex
         },
@@ -879,6 +909,8 @@ export default {
                     this.loading = false;
 
                     localStorage.setItem("updated_category", 1);
+
+                    this.audit();
 
                     this.$router.push("/categories");
                 } catch (error) {
