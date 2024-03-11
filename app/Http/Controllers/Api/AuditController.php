@@ -39,7 +39,9 @@ class AuditController extends Controller
     {
         try {
             $audit = Audit::create([
-                'user_id' => $request->user_id
+                'user_id' => $request->user_id,
+                'task_id' => $request->task_id,
+                'task' => $request->task
             ]);
 
             return response()->json([
