@@ -50,6 +50,7 @@ class Content extends Model
         'url_not_installed_app',
         'whatsapp_type_id',
         'whatsapp_url',
+        'image'
     ];
 
     protected $dates = ['deleted_at'];
