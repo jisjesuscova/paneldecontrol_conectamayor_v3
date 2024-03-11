@@ -252,15 +252,17 @@ class SectionController extends Controller
             if($request->hasFile('icon_image')) { 
                 $icon = time().'_'.'icon.'.$request->icon_image->getClientOriginalExtension();
             } else {
-                $html = $request->fa_icon;
-                
-                // Definir la expresión regular
-                $pattern = '/class="(.*?)"/';
+                if($request->fa_icon != '' && $request->fa_icon != null) {
+                    $html = $request->fa_icon;
+                    
+                    // Definir la expresión regular
+                    $pattern = '/class="(.*?)"/';
 
-                // Realizar la búsqueda mediante la expresión regular
-                preg_match($pattern, $html, $matches);
+                    // Realizar la búsqueda mediante la expresión regular
+                    preg_match($pattern, $html, $matches);
 
-                $icon = $matches[1];
+                    $icon = $matches[1];
+                }
             }
 
             if($request->hasFile('pdf')) { 
@@ -284,7 +286,7 @@ class SectionController extends Controller
             } else {
                 $content_type_id = $request->content_type_id;
             }
-            die();
+      
             $section = Section::create([
                 'status_id' => $request->status_id,
                 'title' => $request->title,
